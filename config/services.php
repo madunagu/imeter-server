@@ -20,7 +20,7 @@ return [
     ],
     'firebase' => [
     'api_key' => env('FIREBASE_APP_ID'), // Only used for JS integration
-    'auth_domain' => 'AUTH_DOMAIN', // Only used for JS integration
+    'auth_domain' => env('FIREBASE_AUTH_DOMAIN'), // Only used for JS integration
     'database_url' => env('FIREBASE_DATABASE_URL'),
     'secret' => env('FIREBASE_DATABSE_SECRET'),
     'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'), // Only used for JS integration
