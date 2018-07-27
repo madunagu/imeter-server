@@ -36,4 +36,25 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * Login a user using a random string+.
+     *
+     * @return void
+     */
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        if ($this->attemptLogin($request)) {
+            $user = $this->guard()->user();
+            $user->generateToken();
+
+            return response()->json([
+            'data' => $user->toArray(),
+        ]);
+        }
+
+        return $this->sendFailedLoginResponse($request);
+    }
 }
