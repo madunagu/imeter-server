@@ -13,7 +13,7 @@ class MailController extends Controller
         $objDemo->demo_two = 'Demo Two Value';
         $objDemo->sender = 'SenderUserName';
         $objDemo->receiver = 'ReceiverUserName';
- 
-        Mail::to("receiver@example.com")->send(new DemoEmail($objDemo));
+
+        Mail::to("ekenemadunagu@gmail.com")->send(new DemoEmail($objDemo));
     }
 }
