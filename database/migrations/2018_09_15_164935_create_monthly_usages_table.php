@@ -20,7 +20,7 @@ class CreateMonthlyUsagesTable extends Migration
             $table->string('cost');
             $table->string('month');
             $table->string('change');
-            $table->string('collected_date');
+            $table->timestamp('collected_date');
             $table->integer('yearly_usage_id');
             $table->boolean('delta');
             $table->timestamps();

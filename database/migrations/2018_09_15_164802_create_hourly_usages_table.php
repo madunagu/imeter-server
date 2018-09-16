@@ -18,7 +18,7 @@ class CreateHourlyUsagesTable extends Migration
             $table->integer('meter_id');
             $table->string('usage');
             $table->string('cost');
-            $table->string('collected_date');
+            $table->timestamp('collected_date');
             $table->string('change');
             $table->boolean('delta');
             $table->integer('daily_usage_id');

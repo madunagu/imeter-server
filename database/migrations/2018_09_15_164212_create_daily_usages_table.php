@@ -18,7 +18,7 @@ class CreateDailyUsagesTable extends Migration
             $table->integer('meter_id');
             $table->string('usage');
             $table->string('cost');
-            $table->string('collected_date');
+            $table->timestamp('collected_date');
             $table->integer('day');
             $table->string('change');
             $table->integer('monthly_usage_id');

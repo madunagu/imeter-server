@@ -18,6 +18,7 @@ class CreateYearlyUsagesTable extends Migration
             $table->integer('meter_id');
             $table->string('usage');
             $table->string('cost');
+            $table->timestamp('collected_date');
             $table->string('year');
             $table->string('change');
             $table->boolean('delta');
