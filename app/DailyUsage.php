@@ -11,7 +11,10 @@ class DailyUsage extends Usage
 {
     public $meter_id;
     public $tarrif = 14;
-
+    protected $fillable = [
+        'meter_id', 'usage', 'cost','delta',
+        'collected_date','day','change','monthly_usage_id'
+    ];
 
     public function setUsages($usages)
     {
