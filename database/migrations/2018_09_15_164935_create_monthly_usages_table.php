@@ -15,11 +15,11 @@ class CreateMonthlyUsagesTable extends Migration
     {
         Schema::create('monthly_usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('meter_id');
-            $table->string('usage');
-            $table->string('cost');
+            $table->string('meter_id');
+            $table->decimal('usage',50,12);
+            $table->decimal('cost',50,12);
             $table->string('month');
-            $table->string('change');
+            $table->decimal('change',50,12);
             $table->timestamp('collected_date');
             $table->integer('yearly_usage_id');
             $table->boolean('delta');
