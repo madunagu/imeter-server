@@ -30,7 +30,7 @@ class DailyUsage extends Usage
     {
         $monthly = MonthlyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         $monthly_date = Carbon::createFromTimestamp($monthly->collected_date);
-        if ($daily_date->isSameDay($this->c_time)) {
+        if ($monthly_date->isSameMonth($this->c_time)) {
             $this->monthly_usage_id = $daily->id;
             #set the parent id and do not create a new parent
             return;
