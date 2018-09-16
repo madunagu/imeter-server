@@ -15,7 +15,7 @@ class CreateWeeklyUsagesTable extends Migration
     {
         Schema::create('weekly_usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_id');
+            $table->string('meter_id')->nullable();
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
             $table->timestamp('collected_date');

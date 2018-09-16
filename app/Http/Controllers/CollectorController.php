@@ -28,7 +28,7 @@ class CollectorController extends Controller
         case 1:
         $hour = $params->H;
         $balance = $params->Bal;
-        $hourly_usage = HourlyUsage::make($meter_no, $date, $usage, $hour);
+        $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour);
 
         #here update the meter balance
         $meter = Meter::where('number', $meter_no);
@@ -46,9 +46,10 @@ class CollectorController extends Controller
         break;
 
         case 8:
-         # regular meter readings
-         # here save the meter readings
-        $daily_usage = new DailyUsage($meter_no, $date, $usage);
+        #regular meter readings
+        #here save the meter readings
+        $day = Carbon::createFromTimestamp($params->date)->day;
+        $daily_usage = DailyUsage::make_and_save($meter_no, (int)$date, $usage, $day);
         break;
         }
     }
