@@ -20,7 +20,7 @@ class HourlyUsage extends Usage
             return;
         }
         #if there is no monthly yet create one
-        $daily = new DailyUsage($this->meter_id, $this->date, $this->usage, $this->c_time->day);
+        $daily = DailyUsage::make($this->meter_id, $this->date, $this->usage, $this->c_time->day);
         $daily->save();
         $this->daily_usage_id = $daily->id;
     }

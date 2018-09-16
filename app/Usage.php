@@ -10,20 +10,22 @@ class Usage extends Model
     public $date;
     public $tarrif = 14;
 
-    public function __construct(int $meter_id, string $date, $usage, $hour=24)
+    public static function make($meter_id, string $date, $usage, $hour=24)
     {
-        $this->meter_id = $meter_id;
-        $this->date = $date;
-        $this->setUsages($usage);
-        $this->process();
-        $this->set_parent_id();
-        $this->save_or_not();
+        $usage = new static();
+        $usage->meter_id = $meter_id;
+        $usage->date = $date;
+        $usage->setUsages($usage);
+        $usage->process();
+        $usage->set_parent_id();
+        $usage->save_or_not();
+        return $usage;
     }
 
     public function get_last_usage()
     {
         $last_usage = 0;
-        $last = static::where('meter_id', $this->meter_id)->desc()->first();
+        $last = static::where('meter_id', $this->meter_id)->orderBy('collected_date','desc')->first();
         if ($last) {
             $last_usage = $last->usage;
         }
@@ -39,7 +41,7 @@ class Usage extends Model
     }
 
     public function save_or_not(){
-        
+
     }
 
     public function process()
