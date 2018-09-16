@@ -13,7 +13,7 @@ class CollectorController extends Controller
     //
     public function collect(Request $request)
     {
-        $parameters = $request=['Password'];
+        $parameters = $request['Password'];
         try {
             $params = json_decode($parameters);
         } catch (Exception $e) {
@@ -22,17 +22,18 @@ class CollectorController extends Controller
         $meter_no = $params->MN;
         $base_message_type = substr($params->Msg, 0, 1);
         $date = $params->DT;
-        $usages = $params->WH;
+        $usage = $params->WH;
 
         switch ($base_message_type) {
         case 1:
         $hour = $params->H;
         $balance = $params->Bal;
-        $hourly_usage = new HourlyUsage($meter_no, $date, $usage, $hour);
+        $hourly_usage = HourlyUsage::make($meter_no, $date, $usage, $hour);
 
         #here update the meter balance
         $meter = Meter::where('number', $meter_no);
         $meter->balance = empty($balance)? $meter->balance : $balance;
+        # $meter->save();
 
         $hourly_usage->save();
 
@@ -47,7 +48,7 @@ class CollectorController extends Controller
         case 8:
          # regular meter readings
          # here save the meter readings
-        $daily_usage = new DailyUsage($meter_no, $date, $usages);
+        $daily_usage = new DailyUsage($meter_no, $date, $usage);
         break;
         }
     }
