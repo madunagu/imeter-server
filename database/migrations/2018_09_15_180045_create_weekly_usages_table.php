@@ -17,6 +17,7 @@ class CreateWeeklyUsagesTable extends Migration
             $table->increments('id');
             $table->string('meter_id')->nullable();
             $table->decimal('usage',50,12);
+            $table->decimal('tarrif',5,3);
             $table->decimal('cost',50,12);
             $table->timestamp('collected_date');
             $table->string('week');

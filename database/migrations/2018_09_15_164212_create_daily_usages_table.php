@@ -18,6 +18,7 @@ class CreateDailyUsagesTable extends Migration
             $table->string('meter_id')->nullable();
             $table->decimal('usage',20,8);
             $table->decimal('cost',20,8);
+            $table->decimal('tarrif',5,3);
             $table->timestamp('collected_date');
             $table->integer('day');
             $table->decimal('change',50,12);

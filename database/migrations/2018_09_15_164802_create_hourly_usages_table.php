@@ -18,6 +18,8 @@ class CreateHourlyUsagesTable extends Migration
             $table->string('meter_id')->nullable();
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
+            $table->decimal('tarrif',5,3);
+            $table->integer('hour');
             $table->timestamp('collected_date');
             $table->decimal('change',50,12);
             $table->boolean('delta');

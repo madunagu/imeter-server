@@ -29,6 +29,9 @@ class CollectorController extends Controller
         case 1:
         $hour = $params->H;
         $balance = $params->Bal;
+        
+        #here verify meter parameters and decrypt
+
         $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour);
 
         #here update the meter balance
