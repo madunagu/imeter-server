@@ -22,8 +22,9 @@ class HourlyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        $daily = DailyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->day);
-        $this->daily_usage_id = $daily->id;
+        #$daily = DailyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->day);
+        #$this->daily_usage_id = $daily->id;
+        $this->daily_usage_id = 1;
     }
     public function save_or_not()
     {

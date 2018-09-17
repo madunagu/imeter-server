@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
 use App\DailyUsage;
 use App\HourlyUsage;
+use App\Meter;
 use App\Custom\SwissKnife;
 
 class CollectorController extends Controller
