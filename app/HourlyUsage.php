@@ -27,6 +27,7 @@ class HourlyUsage extends Usage
             $daily_date = Carbon::createFromTimestamp($daily->collected_date);
             if ($daily_date->isSameDay($this->c_time())) {
                 $this->daily_usage_id = $daily->id;
+                $daily->update_usage();
                 #set the parent id and do not create a new parent
                 return;
             }
@@ -42,7 +43,8 @@ class HourlyUsage extends Usage
         $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
-            if ($old_date->isSameHour($this->c_time())) {
+            echo $old_date->diffInHours($this->c_time());
+            if ($old_date->diffInHours($this->c_time())<=0) {
                 #if they are duplicate warn us of duplicates
                 $redundant = new RedundantUsage();
                 $redundant->name = static::class;
@@ -55,4 +57,5 @@ class HourlyUsage extends Usage
         #if it is not duplicate save it
         $this->save();
     }
+
 }

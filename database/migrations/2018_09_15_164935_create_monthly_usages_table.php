@@ -21,7 +21,7 @@ class CreateMonthlyUsagesTable extends Migration
             $table->decimal('tarrif',5,3);
             $table->string('month');
             $table->decimal('change',50,12);
-            $table->string('collected_date');
+            $table->bigInteger('collected_date');
             $table->integer('yearly_usage_id');
             $table->boolean('delta');
             $table->timestamps();

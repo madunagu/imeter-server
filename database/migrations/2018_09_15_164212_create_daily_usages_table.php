@@ -19,7 +19,7 @@ class CreateDailyUsagesTable extends Migration
             $table->decimal('usage',20,8);
             $table->decimal('cost',20,8);
             $table->decimal('tarrif',5,3);
-            $table->string('collected_date');
+            $table->bigInteger('collected_date');
             $table->integer('day');
             $table->decimal('change',50,12);
             $table->integer('monthly_usage_id');

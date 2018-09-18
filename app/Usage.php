@@ -89,4 +89,27 @@ class Usage extends Model
         #delta is a boolean if the change is positive or negative
         $this->delta = ($this->usage - $last_usage) > 0;
     }
+
+    public function update_usage()
+    {
+    }
+
+    public function calculate_params($children){
+        $total_usage = 0;
+        $total_cost = 0;
+        $total_tarrif = 0;
+        foreach ($children as $child) {
+            $total_cost += $child->cost;
+            $total_usage += $child->usage;
+            $total_tarrif+=$child->tarrif;
+        }
+        $this->cost = $total_cost;
+        $this->usage = $total_usage;
+        $this->tarrif = round($total_tarrif/count($children),3);
+        $last_usage = $this->get_last_usage();
+        $this->change = abs($this->usage - $last_usage);
+        #delta is a boolean if the change is positive or negative
+        $this->delta = ($this->usage - $last_usage) > 0;
+        $this->save();
+    }
 }

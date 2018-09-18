@@ -20,7 +20,7 @@ class CreateHourlyUsagesTable extends Migration
             $table->decimal('cost',50,12);
             $table->decimal('tarrif',5,3);
             $table->integer('hour');
-            $table->string('collected_date');
+            $table->bigInteger('collected_date');
             $table->decimal('change',50,12);
             $table->boolean('delta');
             $table->integer('daily_usage_id');

@@ -3,8 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 use App\Usage;
+use App\MonthlyUsage;
 
 class YearlyUsage extends Usage
 {
@@ -28,5 +30,11 @@ class YearlyUsage extends Usage
         }
         #if it is not duplicate save it
         $this->save();
+    }
+
+    public function update_usage()
+    {
+        $hours = MonthlyUsage::where('yearly_usage_id', $this->id)->get();
+        $this->calculate_params($hours);
     }
 }

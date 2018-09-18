@@ -49,8 +49,9 @@ class DailyUsage extends Usage
         $monthly = MonthlyUsage::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($monthly) {
             $monthly_date = Carbon::createFromTimestamp($monthly->collected_date);
-            if ($monthly_date->isSameMonth()($this->c_time())) {
+            if ($monthly_date->isSameMonth($this->c_time())) {
                 $this->monthly_usage_id = $monthly->id;
+                $monthly->update_usage();
                 #set the parent id and do not create a new parent
                 return;
             }
@@ -83,21 +84,7 @@ class DailyUsage extends Usage
     public function update_usage()
     {
         $hours = HourlyUsage::where('daily_usage_id', $this->id)->get();
-        $total_usage = 0;
-        $total_cost = 0;
-        $total_tarrif = 0;
-        foreach ($hours as $hour) {
-            $total_cost += $hour->cost;
-            $total_usage += $hour->usage;
-            $total_tarrif+=$hour->tarrif;
-        }
-        $this->cost = $total_cost;
-        $this->usage = $total_usage;
-        $this->tarrif = round($total_tarrif/count($hours),3);
-        $last_usage = $this->get_last_usage();
-        $this->change = abs($this->usage - $last_usage);
-        #delta is a boolean if the change is positive or negative
-        $this->delta = ($this->usage - $last_usage) > 0;
-        $this->save();
+        $this->calculate_params($hours);
     }
 }
+

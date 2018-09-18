@@ -3,8 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use App\Usage;
 use App\YearlyUsage;
+use App\DailyUsage;
 
 class MonthlyUsage extends Usage
 {
@@ -21,6 +23,8 @@ class MonthlyUsage extends Usage
             $yearly_date = Carbon::createFromTimestamp($yearly->collected_date);
             if ($yearly_date->isSameYear($this->c_time())) {
                 $this->yearly_usage_id = $yearly->id;
+                #here update the parent since a new child has been added
+                $yearly->update_usage();
                 #set the parent id and do not create a new parent
                 return;
             }
@@ -47,5 +51,11 @@ class MonthlyUsage extends Usage
         }
         #if it is not duplicate save it
         $this->save();
+    }
+
+    public function update_usage()
+    {
+        $hours = DailyUsage::where('monthly_usage_id', $this->id)->get();
+        $this->calculate_params($hours);
     }
 }
