@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Meter;
+
 class MetersTableSeeder extends Seeder
 {
     /**
@@ -21,7 +22,6 @@ class MetersTableSeeder extends Seeder
         $alpha->type = 'meter_type';
         $alpha->save();
 
-        
         //
     }
 }

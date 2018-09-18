@@ -43,7 +43,6 @@ class HourlyUsage extends Usage
         $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
-            echo $old_date->diffInHours($this->c_time());
             if ($old_date->diffInHours($this->c_time())<=0) {
                 #if they are duplicate warn us of duplicates
                 $redundant = new RedundantUsage();
