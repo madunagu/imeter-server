@@ -14,11 +14,13 @@ class CreateHourlyUsagesTable extends Migration
     public function up()
     {
         Schema::create('hourly_usages', function (Blueprint $table) {
-            $table->increments('id')->nullable();
-            $table->string('meter_id');
+            $table->increments('id');
+            $table->string('meter_number');
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
-            $table->timestamp('collected_date');
+            $table->decimal('tarrif',5,3);
+            $table->integer('hour');
+            $table->bigInteger('collected_date');
             $table->decimal('change',50,12);
             $table->boolean('delta');
             $table->integer('daily_usage_id');

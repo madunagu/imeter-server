@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
 use App\DailyUsage;
 use App\HourlyUsage;
+use App\Meter;
 use App\Custom\SwissKnife;
 
 class CollectorController extends Controller
@@ -20,6 +21,7 @@ class CollectorController extends Controller
             die("invalid data format");
         }
         $meter_no = $params->MN;
+        $message_type = $params->Msg;
         $base_message_type = substr($params->Msg, 0, 1);
         $date = $params->DT;
         $usage = $params->WH;
@@ -28,21 +30,22 @@ class CollectorController extends Controller
         case 1:
         $hour = $params->H;
         $balance = $params->Bal;
-        $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour);
+        
+        #here verify meter parameters and decrypt
+        $meter = Meter::where('number', $meter_no)->first();
+        if(!$meter){
+            die('unidentified meter');
+        }
 
         #here update the meter balance
-        $meter = Meter::where('number', $meter_no);
         $meter->balance = empty($balance)? $meter->balance : $balance;
-        # $meter->save();
+        $meter->save();
 
-        $hourly_usage->save();
+        $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour,true);
 
-        $result = SwissKnife::object();
-        $result->MN = $meter_no;
-        $result->Msg = $base_message_type;
-        $result->S = time();
+        $result = SwissKnife::respond($message_type,$meter_no);
 
-        echo json_encode($result);
+        SwissKnife::output($result,$meter_no);
         break;
 
         case 8:

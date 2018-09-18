@@ -12,19 +12,19 @@ return [
     | default location for this type of information, allowing packages
     | to have a conventional place to find your various credentials.
     |
-    */
+ */
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
     ],
     'firebase' => [
-    'api_key' => env('FIREBASE_APP_ID'), // Only used for JS integration
-    'auth_domain' => env('FIREBASE_AUTH_DOMAIN'), // Only used for JS integration
-    'database_url' => env('FIREBASE_DATABASE_URL'),
-    'secret' => env('FIREBASE_DATABSE_SECRET'),
-    'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'), // Only used for JS integration
-],
+        'api_key' => env('FIREBASE_APP_ID'), // Only used for JS integration
+        'auth_domain' => env('FIREBASE_AUTH_DOMAIN'), // Only used for JS integration
+        'database_url' => env('FIREBASE_DATABASE_URL'),
+        'secret' => env('FIREBASE_DATABSE_SECRET'),
+        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'), // Only used for JS integration
+    ],
 
     'ses' => [
         'key' => env('SES_KEY'),

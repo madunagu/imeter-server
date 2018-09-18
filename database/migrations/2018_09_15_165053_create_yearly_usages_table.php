@@ -15,10 +15,11 @@ class CreateYearlyUsagesTable extends Migration
     {
         Schema::create('yearly_usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_id')->nullable();
+            $table->string('meter_number');
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
-            $table->timestamp('collected_date');
+            $table->decimal('tarrif',5,3);
+            $table->bigInteger('collected_date');
             $table->string('year');
             $table->decimal('change',50,12);
             $table->boolean('delta');

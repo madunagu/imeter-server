@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMetersTable extends Migration
+class CreateUnVerifiedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateMetersTable extends Migration
      */
     public function up()
     {
-        Schema::create('meters', function (Blueprint $table) {
+        Schema::create('un_verifieds', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('number')->unique();
-            $table->integer('user_id');
-            $table->decimal('tarrif',8,3);
-            $table->string('balance');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('type');
+            $table->string('meter_number');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ class CreateMetersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meters');
+        Schema::dropIfExists('un_verifieds');
     }
 }

@@ -9,13 +9,12 @@ use App\MonthlyUsage;
 
 class DailyUsage extends Usage
 {
-    public $meter_id;
-    public $tarrif = 14;
-    protected $fillable = [
-        'meter_id', 'usage', 'cost','delta',
-        'collected_date','day','change','monthly_usage_id'
-    ];
 
+    public static $key = 'day';
+    public static $checker_function = 'isSameMonth';
+    public static $parent_id = 'monthly_usage_id';
+    public static $parent_name = MonthlyUsage::class;
+    
     public function setUsages($usages)
     {
         $total = 0;
@@ -28,38 +27,44 @@ class DailyUsage extends Usage
                 #here create all the hourly usages
                 $total += $usage;
                 #noticed presence of infinite loop
-                #$hourly = new HourlyUsage($this->meter_id, $this->date, $usage, $hour);
+                if ($this->make_children) {
+                    $hourly = HourlyUsage::make_and_save($this->meter_number, $this->collected_date, $usage, $hour);
+                }
                 $hour++;
             }
+            $this->usage = $total;
         } else {
             #noticed the same
-            #$hourly = new HourlyUsage($this->meter_id, $this->date, $usages, $hour);
+            if ($this->make_children) {
+                $hourly = HourlyUsage::make_and_save($this->meter_number, $this->collected_date, $usages, $hour);
+            }
             $this->usage = $usages;
         }
-        $this->usage = $total;
+
+
     }
 
     public function set_parent_id()
     {
-        $monthly = MonthlyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
+        $monthly = MonthlyUsage::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($monthly) {
             $monthly_date = Carbon::createFromTimestamp($monthly->collected_date);
             if ($monthly_date->isSameMonth($this->c_time())) {
-                $this->monthly_usage_id = $daily->id;
+                $this->monthly_usage_id = $monthly->id;
+                $monthly->update_usage();
                 #set the parent id and do not create a new parent
                 return;
             }
         }
         #if there is no monthly yet create one
-        #$monthly = MonthlyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->month);
-        #$this->monthly_usage_id = $monthly->id;
-        $this->monthly_usage_id = 1;
+        $monthly = MonthlyUsage::make_and_save($this->meter_number, $this->collected_date, $this->usage, $this->c_time()->month);
+        $this->monthly_usage_id = $monthly->id;
     }
 
     public function save_or_not()
     {
         #here check if it is a duplicate
-        $old = static::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
+        $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
             if ($old_date->isSameDay($this->c_time())) {
@@ -73,6 +78,13 @@ class DailyUsage extends Usage
             }
         }
         #if it is not duplicate save it
-        #$this->save();
+        $this->save();
+    }
+
+    public function update_usage()
+    {
+        $hours = HourlyUsage::where('daily_usage_id', $this->id)->get();
+        $this->calculate_params($hours);
     }
 }
+
