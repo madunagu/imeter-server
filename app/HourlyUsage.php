@@ -10,9 +10,14 @@ use App\DailyUsage;
 
 class HourlyUsage extends Usage
 {
+    protected $fillable = [
+        'meter_number', 'usage', 'cost','tarrif','hour',
+        'collected_date','change','delta','daily_usage_id'
+    ];
+
     public function set_parent_id()
     {
-        $daily = DailyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
+        $daily = DailyUsage::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($daily) {
             $daily_date = Carbon::createFromTimestamp($daily->collected_date);
             if ($daily_date->isSameDay($this->c_time())) {
@@ -22,14 +27,14 @@ class HourlyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        #$daily = DailyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->day);
+        #$daily = DailyUsage::make_and_save($this->meter_number, $this->collected_date, $this->usage, $this->c_time()->day);
         #$this->daily_usage_id = $daily->id;
         $this->daily_usage_id = 1;
     }
     public function save_or_not()
     {
         #here check if it is a duplicate
-        $old = static::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
+        $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
             if ($old_date->isSameDay($this->c_time())) {

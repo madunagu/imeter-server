@@ -39,8 +39,6 @@ class CollectorController extends Controller
         $meter->balance = empty($balance)? $meter->balance : $balance;
         # $meter->save();
 
-        $hourly_usage->save();
-
         $result = SwissKnife::object();
         $result->MN = $meter_no;
         $result->Msg = $base_message_type;

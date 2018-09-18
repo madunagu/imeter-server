@@ -12,7 +12,7 @@ class MetersTableSeeder extends Seeder
     public function run()
     {
         $alpha = new Meter();
-        $alpha->meter_id = 'sldkkd233';
+        $alpha->meter_number = 'sldkkd233';
         
         //
     }

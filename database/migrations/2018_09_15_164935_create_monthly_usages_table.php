@@ -15,7 +15,7 @@ class CreateMonthlyUsagesTable extends Migration
     {
         Schema::create('monthly_usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_id')->nullable();
+            $table->string('meter_number');
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
             $table->decimal('tarrif',5,3);
