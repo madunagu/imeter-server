@@ -21,6 +21,7 @@ class CollectorController extends Controller
             die("invalid data format");
         }
         $meter_no = $params->MN;
+        $message_type = $params->Msg;
         $base_message_type = substr($params->Msg, 0, 1);
         $date = $params->DT;
         $usage = $params->WH;
@@ -31,20 +32,20 @@ class CollectorController extends Controller
         $balance = $params->Bal;
         
         #here verify meter parameters and decrypt
-
-        $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour);
+        $meter = Meter::where('number', $meter_no)->first();
+        if(!$meter){
+            die('unidentified meter');
+        }
 
         #here update the meter balance
-        $meter = Meter::where('number', $meter_no);
         $meter->balance = empty($balance)? $meter->balance : $balance;
-        # $meter->save();
+        $meter->save();
 
-        $result = SwissKnife::object();
-        $result->MN = $meter_no;
-        $result->Msg = $base_message_type;
-        $result->S = time();
+        $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour,true);
 
-        echo json_encode($result);
+        $result = SwissKnife::respond($message_type,$meter_no);
+
+        SwissKnife::output($result,$meter_no);
         break;
 
         case 8:

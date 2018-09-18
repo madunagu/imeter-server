@@ -19,7 +19,7 @@ class CreateWeeklyUsagesTable extends Migration
             $table->decimal('usage',50,12);
             $table->decimal('tarrif',5,3);
             $table->decimal('cost',50,12);
-            $table->timestamp('collected_date');
+            $table->string('collected_date');
             $table->string('week');
             $table->decimal('change',50,12);
             $table->string('yearly_usage_id');

@@ -10,9 +10,14 @@ use App\DailyUsage;
 
 class HourlyUsage extends Usage
 {
+    public static $key = 'hour';
+    public static $checker_function = 'isSameDay';
+    public static $parent_id = 'daily_usage_id';
+    public static $parent_name = DailyUsage::class;
+
     protected $fillable = [
-        'meter_number', 'usage', 'cost','tarrif','hour',
-        'collected_date','change','delta','daily_usage_id'
+        'meter_number', 'usage', 'cost', 'tarrif', 'hour',
+        'collected_date', 'change', 'delta', 'daily_usage_id'
     ];
 
     public function set_parent_id()
@@ -27,17 +32,17 @@ class HourlyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        #$daily = DailyUsage::make_and_save($this->meter_number, $this->collected_date, $this->usage, $this->c_time()->day);
-        #$this->daily_usage_id = $daily->id;
-        $this->daily_usage_id = 1;
+        $daily = DailyUsage::make_and_save($this->meter_number, $this->collected_date, $this->usage, $this->c_time()->day);
+        $this->daily_usage_id = $daily->id;
     }
+
     public function save_or_not()
     {
         #here check if it is a duplicate
         $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
-            if ($old_date->isSameDay($this->c_time())) {
+            if ($old_date->isSameHour($this->c_time())) {
                 #if they are duplicate warn us of duplicates
                 $redundant = new RedundantUsage();
                 $redundant->name = static::class;

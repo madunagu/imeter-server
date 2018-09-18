@@ -19,7 +19,7 @@ class CreateYearlyUsagesTable extends Migration
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
             $table->decimal('tarrif',5,3);
-            $table->timestamp('collected_date');
+            $table->string('collected_date');
             $table->string('year');
             $table->decimal('change',50,12);
             $table->boolean('delta');
