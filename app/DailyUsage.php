@@ -4,11 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+
+use Mpociot\Firebase\SyncsWithFirebase;
+
 use App\Usage;
 use App\MonthlyUsage;
 
 class DailyUsage extends Usage
 {
+    use SyncsWithFirebase;
 
     public static $key = 'day';
     public static $checker_function = 'isSameMonth';

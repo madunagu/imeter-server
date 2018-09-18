@@ -5,11 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
+
+use Mpociot\Firebase\SyncsWithFirebase;
+
 use App\Usage;
 use App\DailyUsage;
 
 class HourlyUsage extends Usage
 {
+    use SyncsWithFirebase;
+    
     public static $key = 'hour';
     public static $checker_function = 'isSameDay';
     public static $parent_id = 'daily_usage_id';
