@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateYearlyUsagesTable extends Migration
+class CreateEncryptionKeysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,11 @@ class CreateYearlyUsagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('yearly_usages', function (Blueprint $table) {
+        Schema::create('encryption_keys', function (Blueprint $table) {
             $table->increments('id');
             $table->string('meter_number');
-            $table->decimal('usage',50,12);
-            $table->decimal('cost',50,12);
-            $table->decimal('tarrif',5,3);
-            $table->bigInteger('collected_date');
-            $table->string('year');
-            $table->decimal('delta',50,12);
-            $table->boolean('down');
+            $table->string('input_key');
+            $table->string('output_key');
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ class CreateYearlyUsagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('yearly_usages');
+        Schema::dropIfExists('encryption_keys');
     }
 }

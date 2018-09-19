@@ -21,9 +21,9 @@ class CreateWeeklyUsagesTable extends Migration
             $table->decimal('cost',50,12);
             $table->bigInteger('collected_date');
             $table->string('week');
-            $table->decimal('change',50,12);
+            $table->decimal('delta',50,12);
             $table->string('yearly_usage_id');
-            $table->boolean('delta');
+            $table->boolean('down');
             $table->timestamps();
         });
     }

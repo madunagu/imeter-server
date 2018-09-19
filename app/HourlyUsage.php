@@ -14,7 +14,7 @@ use App\DailyUsage;
 class HourlyUsage extends Usage
 {
     use SyncsWithFirebase;
-    
+
     public static $key = 'hour';
     public static $checker_function = 'isSameDay';
     public static $parent_id = 'daily_usage_id';
@@ -22,7 +22,7 @@ class HourlyUsage extends Usage
 
     protected $fillable = [
         'meter_number', 'usage', 'cost', 'tarrif', 'hour',
-        'collected_date', 'change', 'delta', 'daily_usage_id'
+        'collected_date', 'delta', 'down', 'daily_usage_id'
     ];
 
     public function set_parent_id()

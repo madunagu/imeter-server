@@ -21,9 +21,9 @@ class CreateDailyUsagesTable extends Migration
             $table->decimal('tarrif',5,3);
             $table->bigInteger('collected_date');
             $table->integer('day');
-            $table->decimal('change',50,12);
+            $table->decimal('delta',50,12);
             $table->integer('monthly_usage_id');
-            $table->boolean('delta');
+            $table->boolean('down');
             $table->timestamps();
         });
     }
