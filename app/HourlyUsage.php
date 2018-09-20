@@ -61,5 +61,4 @@ class HourlyUsage extends Usage
         #if it is not duplicate save it
         $this->save();
     }
-
 }
