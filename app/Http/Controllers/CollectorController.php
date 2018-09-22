@@ -8,9 +8,10 @@ use App\DailyUsage;
 use App\HourlyUsage;
 use App\Meter;
 use App\Custom\SwissKnife;
-use App\MeterRequest;
+use App\ServerRequest;
 use App\Warning;
 use App\Tamper;
+use App\MeterRequest;
 
 class CollectorController extends Controller
 {
@@ -27,11 +28,21 @@ class CollectorController extends Controller
             $meter_no = $params->MN;
             $message_type = $params->Msg;
             $date = $params->DT;
+            $sent_time = $params->S;
         }
         catch(Exception $e){
             die("invalid format required parameters such as collected date, meter number or message type may be missing");
         }
         $base_message_type = substr($params->Msg, 0, 1);
+        $myReq = new MeterRequest();
+        $myReq->meter_number = $meter_no;
+        $myReq->message_type = $message_type;
+        $myReq->sent_time = $sent_time;
+        $myReq->recieved_time = time();
+        $myReq->body = $parameters;
+        $myReq->time_lag = (int)$myReq->recieved_time - (int)$sent_time;
+        $myReq->save();
+
 
         #here verify meter parameters and decrypt
         $meter = Meter::where('number', $meter_no)->first();
@@ -57,7 +68,7 @@ class CollectorController extends Controller
         break;
 
         case 2:
-        $pending = MeterRequest::where('meter_number', $meter_no)->where('done', 0)->orderBy('created_at', 'desc')->first();
+        $pending = ServerRequest::where('meter_number', $meter_no)->where('done', 0)->orderBy('created_at', 'desc')->first();
         $result = SwissKnife::respond($message_type, $meter_no);
         if (!empty($pending)) {
             $key = $pending->request_key;

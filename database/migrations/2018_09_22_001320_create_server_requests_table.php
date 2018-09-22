@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMeterRequestsTable extends Migration
+class CreateServerRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateMeterRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('meter_requests', function (Blueprint $table) {
+        Schema::create('server_requests', function (Blueprint $table) {
             $table->increments('id');
             $table->string('meter_number');
-            $table->string('message_type');
-            $table->string('body');
-            $table->bigInteger('sent_time');
-            $table->bigInteger('recieved_time');
-            $table->bigInteger('time_lag');
+            $table->string('request_type');
+            $table->string('request_key');
+            $table->string('request_value');
+            $table->bigInteger('done_time');
+            $table->integer('relative_id');
+            $table->boolean('done');
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ class CreateMeterRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meter_requests');
+        Schema::dropIfExists('server_requests');
     }
 }
