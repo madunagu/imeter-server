@@ -18,7 +18,7 @@ class DailyUsage extends Usage
     public static $checker_function = 'isSameMonth';
     public static $parent_id = 'monthly_usage_id';
     public static $parent_name = MonthlyUsage::class;
-    
+
     public function setUsages($usages)
     {
         $total = 0;
@@ -44,8 +44,6 @@ class DailyUsage extends Usage
             }
             $this->usage = $usages;
         }
-
-
     }
 
     public function set_parent_id()
