@@ -16,4 +16,12 @@ class SwissKnife
     {
         echo json_encode($result);
     }
+
+    public static function encode($object){
+        echo json_encode($object);
+    }
+
+    public static function throw_403($error){
+
+    }
 }
