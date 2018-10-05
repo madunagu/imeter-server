@@ -19,7 +19,6 @@ class CreatePostsTable extends Migration
             $table->string('body');
             $table->integer('views')->defaults('0');
             $table->integer('user_id');
-            $table->integer('visible')->defaults('1');
             $table->timestamps();
         });
     }

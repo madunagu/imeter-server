@@ -15,6 +15,10 @@ class CreateDeletedPostsTable extends Migration
     {
         Schema::create('deleted_posts', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->string('body');
+            $table->integer('views')->defaults('0');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
