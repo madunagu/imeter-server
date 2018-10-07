@@ -15,7 +15,7 @@ class CreateMeterRechargesTable extends Migration
     {
         Schema::create('meter_recharges', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->string('amount');
             $table->string('method');
             $table->string('token');

@@ -8,5 +8,7 @@ class ServerRequest extends Model
 {
     #protocol for most communication
     public static $requestTypeToggleConnection = '1';
-    public static $requestKeyToggleConnection = 'CD';    
+    public static $requestKeyToggleConnection = 'CD';
+    public static $requestTypePowerTime = '2';
+    public static $requestKeyPowerTime = 'PT';
 }

@@ -8,6 +8,7 @@ use App\User;
 use App\PowerToggle;
 use App\MeterRequest;
 use App\MeterStatistics;
+use App\MeterRecharge;
 
 class Meter extends Model
 {
@@ -127,6 +128,27 @@ class Meter extends Model
     public function recharge($amount)
     {
         $stat = $this->getLastStatistics();
+        $balance_amount = $stat->naira_balance;
+
+        $meter_recharge = new MeterRecharge();
+        $meter_recharge->meter_id = $this->id;
+        $meter_recharge->amount = SwissKnife::ensurePositive($amount);
+        $meter_recharge->method = MeterRecharge::$paymentMethodWeb;
+        #token should be the payment token recieved from the api
+        $meter_recharge->token = 'replace with real payment api token';
+        $meter_recharge->save();
+
+        $server_request = new ServerRequest();
+        $server_request->meter_id = $this->id;
+        $server_request->request_type = ServerRequest::$requestTypePowerTime;
+        $server_request->request_key = ServerRequest::$requestKeyPowerTime;
+        $server_request->request_value = $meter_recharge->amount;
+        $server_request->save();
+
+        return response()->json(['success'=>true,['succesfully disconnected']],200);
+    }
+
+    public function setEnergyBalance($balance){
 
     }
 }

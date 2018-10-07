@@ -24,4 +24,8 @@ class SwissKnife
     public static function throw_403($error){
 
     }
+
+    public static function ensurePositive($number){
+
+    }
 }

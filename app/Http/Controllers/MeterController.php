@@ -21,12 +21,25 @@ class MeterController extends Controller
         $meter->toggleOn();
     }
 
-
-    public function rechargeMeter(Request $request){
+    public function rechargeMeter(Request $request)
+    {
         $amount = $request['amount'];
         $token = JWTAuth::getToken();
         $user = JWTAuth::toUser($token);
         $meter = $user->meter();
         $meter->recharge($amount);
+    }
+
+    public function setEnergyBalance(Request $request)
+    {
+        $amount = $request['amount'];
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+        $meter = $user->meter();
+        $meter->setEnergyBalance($balance);
+    }
+
+    public function sendIOTData(Request $request){
+        #here we add the complex logic concerning iod data structures
     }
 }
