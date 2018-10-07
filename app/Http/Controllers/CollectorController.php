@@ -73,12 +73,12 @@ class CollectorController extends Controller
         if (!empty($pending)) {
             $key = $pending->request_key;
             $value = $pending->request_value;
-        }
-        $result->$key = $value;
+            $result->$key = $value;
 
-        # update the done time
-        $pending->done_time = time();
-        $pending->save();
+            # update the done time
+            $pending->done_time = time();
+            $pending->save();
+        }
 
         SwissKnife::output($result, $meter_no);
         break;

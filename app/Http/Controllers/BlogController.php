@@ -45,7 +45,7 @@ class BlogController extends Controller
         }
 
         return response(
-            "successfully inserted post id: $post->id",
+            compact("successfully inserted post id: $post->id"),
             200
         );
     }
@@ -68,7 +68,7 @@ class BlogController extends Controller
         $post->delete();
 
         return response(
-            "successfully deleted post id: $deleted_post->id",
+            compact("successfully deleted post id: $deleted_post->id"),
             200
         );
     }

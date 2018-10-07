@@ -22,6 +22,15 @@ Route::middleware('auth:api')->get('/user/:id', function (Request $request){
   return $request->user();
 });
 
+Route::post('/login','AuthController@login');
+
+Route::group(['middleware' => ['jwt.auth']], function() {
+    /* here add the jwt protected routes */
+    Route::get('test', function(){
+        return response()->json(['foo'=>'bar']);
+    });
+});
+
 Route::post('/collector', [
     'uses'=>'CollectorController@collect'
 ]);
