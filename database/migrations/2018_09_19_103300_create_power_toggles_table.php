@@ -15,10 +15,10 @@ class CreatePowerTogglesTable extends Migration
     {
         Schema::create('power_toggles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->integer('code');
             $table->string('origin');
-            $table->string('done');
+            $table->string('done')->defaults('0');
             $table->timestamps();
         });
     }

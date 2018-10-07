@@ -48,4 +48,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function meter(){
+        return $this->hasOne('App\Meter');
+    }
 }

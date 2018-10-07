@@ -15,8 +15,11 @@ class CreateMeterStatisticsTable extends Migration
     {
         Schema::create('meter_statistics', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->decimal('average_temprature',15,8);
+            $table->decimal('naira_balance',15,8);
+            $table->integer('connect_status');
+            $table->decimal('energy_balance',15,8);
             $table->decimal('average_voltage',50,12);
             $table->decimal('average_current',50,12);
             $table->decimal('average_frequency',50,12);

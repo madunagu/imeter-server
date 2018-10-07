@@ -15,7 +15,7 @@ class CreateServerRequestsTable extends Migration
     {
         Schema::create('server_requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->string('request_type');
             $table->string('request_key');
             $table->string('request_value');
