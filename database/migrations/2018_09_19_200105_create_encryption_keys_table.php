@@ -15,7 +15,7 @@ class CreateEncryptionKeysTable extends Migration
     {
         Schema::create('encryption_keys', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->string('input_key');
             $table->string('output_key');
             $table->timestamps();
