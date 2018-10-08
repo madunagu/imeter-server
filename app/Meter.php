@@ -148,9 +148,21 @@ class Meter extends Model
         return response()->json(['success'=>true,['succesfully disconnected']],200);
     }
 
-    public function setEnergyBalance($balance){
-        # Setting the energy balance here
+    public function setEnergyBudget($budget, $type){
+        $energy_budget = new EnergyBudget();
+        $energy_budget->meter_id = $this->id;
+        $energy_budget->energy_budget = SwissKnife::ensurePositive($budget);
+        $energy_budget->enforcement = $type;
+        $energy_budget->save();
 
+        $server_request = new ServerRequest();
+        $server_request->meter_id = $this->id;
+        $server_request->request_type = ServerRequest::$requestTypeEnergyBudget;
+        $server_request->request_key = ServerRequest::$requestKeyEnergyBudget;
+        $server_request->request_value = $meter_recharge->amount;
+        $server_request->save();
+
+        return response()->json(['success'=>true,['succesfully set Energy Budget']],200);
     }
 
     public function pushIOTData($data){

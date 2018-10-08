@@ -15,6 +15,9 @@ class CreateEnergyBudgetsTable extends Migration
     {
         Schema::create('energy_budgets', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('meter_id');
+            $table->decimal('energy_budget');
+            $table->string('enforcement');
             $table->timestamps();
         });
     }

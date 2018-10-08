@@ -11,4 +11,6 @@ class ServerRequest extends Model
     public static $requestKeyToggleConnection = 'CD';
     public static $requestTypePowerTime = '2';
     public static $requestKeyPowerTime = 'PT';
+    public static $requestKeyEnergyBudget = 'EB';
+    public static $requestTypeEnergyBudget = '3';
 }

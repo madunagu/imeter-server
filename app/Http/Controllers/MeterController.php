@@ -36,7 +36,7 @@ class MeterController extends Controller
         $token = JWTAuth::getToken();
         $user = JWTAuth::toUser($token);
         $meter = $user->meter();
-        $meter->setEnergyBalance($balance);
+        $meter->setEnergyBudget($balance);
     }
 
     public function sendIOTData(Request $request){
