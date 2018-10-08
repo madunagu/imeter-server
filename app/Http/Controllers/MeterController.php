@@ -40,6 +40,11 @@ class MeterController extends Controller
     }
 
     public function sendIOTData(Request $request){
-        #here we add the complex logic concerning iod data structures
+        #here we add the complex logic concerning iot data structures
+        $data = $request['data'];
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+        $meter = $user->meter();
+        $meter->pushIOTData($data);
     }
 }

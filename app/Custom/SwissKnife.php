@@ -26,6 +26,6 @@ class SwissKnife
     }
 
     public static function ensurePositive($number){
-
+        return abs($number);
     }
 }

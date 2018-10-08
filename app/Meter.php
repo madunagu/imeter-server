@@ -149,6 +149,11 @@ class Meter extends Model
     }
 
     public function setEnergyBalance($balance){
+        # Setting the energy balance here
 
+    }
+
+    public function pushIOTData($data){
+        # here logic for saving IOT Data comes in
     }
 }
