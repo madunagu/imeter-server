@@ -15,7 +15,7 @@ class CreateTampersTable extends Migration
     {
         Schema::create('tampers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->integer('tamper_type');
             $table->bigInteger('collected_date');
             $table->timestamps();

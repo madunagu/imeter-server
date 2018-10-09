@@ -104,7 +104,7 @@ class CollectorController extends Controller
         case 4:
         $type = $params->T;
         $theft = new Tamper();
-        $theft->meter_number = $meter_no;
+        $theft->meter_id = $meter->id;
         $theft->tamper_type = $type;
         $theft->collected_date = $date;
         $theft->save();
