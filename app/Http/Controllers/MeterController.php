@@ -21,6 +21,15 @@ class MeterController extends Controller
         $meter->toggleOn();
     }
 
+    public function toggleOff(Request $request)
+    {
+        #here verify the user that made this request
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+        $meter = $user->meter();
+        $meter->toggleOff();
+    }
+
     public function rechargeMeter(Request $request)
     {
         $amount = $request['amount'];

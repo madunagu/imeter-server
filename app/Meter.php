@@ -135,6 +135,7 @@ class Meter extends Model
         $meter_recharge->amount = SwissKnife::ensurePositive($amount);
         $meter_recharge->method = MeterRecharge::$paymentMethodWeb;
         #token should be the payment token recieved from the api
+        //TODO: add payment methods token from real api
         $meter_recharge->token = 'replace with real payment api token';
         $meter_recharge->save();
 
@@ -167,5 +168,6 @@ class Meter extends Model
 
     public function pushIOTData($data){
         # here logic for saving IOT Data comes in
+
     }
 }

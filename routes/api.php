@@ -26,9 +26,43 @@ Route::post('/login','AuthController@login');
 
 Route::group(['middleware' => ['jwt.auth']], function() {
     /* here add the jwt protected routes */
-    Route::get('test', function(){
+    Route::get('/test', function(){
         return response()->json(['foo'=>'bar']);
     });
+    Route::post('/toggle-on', [
+        'uses'=>'MeterController@toggleOn'
+    ]);
+
+    Route::post('/toggle-off', [
+        'uses'=>'MeterController@toggleOff'
+    ]);
+
+    Route::post('/power-time', [
+        'uses'=>'MeterController@rechargeMeter'
+    ]);
+
+    Route::post('/energy-balance', [
+        'uses'=>'MeterController@setEnergyBalance'
+    ]);
+
+    Route::post('/iot-data', [
+        'uses'=>'MeterController@sendIOTData'
+    ]);
+
+    # blog routes API missing documentation
+
+    Route::post('/post', [
+        'uses'=>'BlogController@create'
+    ]);
+
+    Route::delete('/post/:id', [
+        'uses'=>'BlogController@delete'
+    ]);
+
+    Route::put('/post/:id', [
+        'uses'=>'BlogController@update'
+    ]);
+
 });
 
 Route::post('/collector', [

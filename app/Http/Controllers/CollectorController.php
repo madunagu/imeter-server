@@ -74,6 +74,7 @@ class CollectorController extends Controller
             $key = $pending->request_key;
             $value = $pending->request_value;
             $result->$key = $value;
+            $result->PAR = $pending->request_type;
 
             # update the done time
             $pending->done_time = time();
