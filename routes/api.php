@@ -17,16 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/user/:id', function (Request $request){
-  //  return $request
-  return $request->user();
+Route::middleware('auth:api')->get('/user/:id', function (Request $request) {
+    //  return $request
+    return $request->user();
 });
 
-Route::post('/login','AuthController@login');
+Route::post('/login', 'AuthController@login');
 
-Route::group(['middleware' => ['jwt.auth']], function() {
+Route::group(['middleware' => ['jwt.auth']], function () {
     /* here add the jwt protected routes */
-    Route::get('/test', function(){
+    Route::get('/test', function () {
         return response()->json(['foo'=>'bar']);
     });
     Route::post('/toggle-on', [
@@ -62,9 +62,16 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::put('/post/:id', [
         'uses'=>'BlogController@update'
     ]);
-
 });
 
 Route::post('/collector', [
     'uses'=>'CollectorController@collect'
+]);
+
+Route::post('/fota', [
+    'uses'=>'FOTAController@saveBIN'
+]);
+
+Route::get('/fota', [
+    'uses'=>'FOTAController@getBIN'
 ]);
