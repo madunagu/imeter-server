@@ -95,6 +95,9 @@ class Usage extends Model
     }
 
     public function calculate_params($children){
+        if(count($children)==0){
+            return;
+        }
         $total_usage = 0;
         $total_cost = 0;
         $total_tarrif = 0;
