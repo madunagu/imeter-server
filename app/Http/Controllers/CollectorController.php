@@ -12,6 +12,7 @@ use App\ServerRequest;
 use App\Warning;
 use App\Tamper;
 use App\MeterRequest;
+use App\EnergyBudget;
 
 class CollectorController extends Controller
 {
@@ -61,6 +62,8 @@ class CollectorController extends Controller
         $meter->save();
 
         $hourly_usage = HourlyUsage::make_and_save($meter_no, (int)$date, $usage, $hour, true);
+
+        EnergyBudget::compareUsage($meter->id);
 
         $result = SwissKnife::respond($message_type, $meter_no);
 
@@ -112,6 +115,7 @@ class CollectorController extends Controller
         $result = SwissKnife::respond($message_type,$meter_no);
         SwissKnife::output($result,$meter_no);
         break;
+
         case 8:
         #regular meter readings
         #here save the meter readings
