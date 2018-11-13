@@ -18,6 +18,7 @@ class CreateEnergyBudgetsTable extends Migration
             $table->integer('meter_id');
             $table->decimal('energy_budget');
             $table->string('enforcement');
+            $table->integer('should_shutdown');
             $table->timestamps();
         });
     }

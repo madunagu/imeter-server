@@ -65,6 +65,9 @@ class EnergyBudget extends Model
                 # budget has overflown
                 $averageUsage = ceil($parentUsage/$this->getParentDivisor());
                 #warn user
+                if($budget->should_shutdown){
+                    Meter::where('meter_id',$meter_id)->first()->toggleOff();
+                }
                 UserNotification::create('1', 'You Have Surpassed Your Energy Budget', 'your average energy usage is now $averageUsage which is more than $budget', '0', $meter_id);
             }
         }
