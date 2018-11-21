@@ -14,11 +14,11 @@ class SwissKnife
 
     public static function output($result, string $meter_no)
     {
-        echo json_encode($result);
+        return response()->json($result);
     }
 
     public static function encode($object){
-        echo json_encode($object);
+        return response()->json($object);
     }
 
     public static function throw_403($error){

@@ -13,7 +13,7 @@ class BlogController extends Controller
     public function list(Request $request)
     {
         $blog_posts = Post::all();
-        SwissKnife::encode($blog_posts);
+        return SwissKnife::encode($blog_posts);
     }
 
     public function create(Request $request)

@@ -56,14 +56,14 @@ class EnergyBudget extends Model
         }
     }
 
-    public function compareUsage($meter_id)
+    public static function compareUsage($meter_id)
     {
         $budget = EnergyBudget::where('meter_id', $meter_id)->orderBy('id', 'desc')->first();
         if ($budget) {
-            $parentUsage = $this->getEnergyUsage($this->returnUpperEquivalent());
-            if ($budget->energy_budget < ($parentUsage/$this->getParentDivisor())) {
+            $parentUsage = $budget->getEnergyUsage($budget->returnUpperEquivalent());
+            if ($budget->energy_budget < ($parentUsage/$budget->getParentDivisor())) {
                 # budget has overflown
-                $averageUsage = ceil($parentUsage/$this->getParentDivisor());
+                $averageUsage = ceil($parentUsage/$budget->getParentDivisor());
                 #warn user
                 if($budget->should_shutdown){
                     Meter::where('meter_id',$meter_id)->first()->toggleOff();
@@ -72,6 +72,7 @@ class EnergyBudget extends Model
             }
         }
     }
+
 
     public function returnUpperEquivalent()
     {

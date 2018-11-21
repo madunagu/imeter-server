@@ -67,11 +67,11 @@ class CollectorController extends Controller
 
         $result = SwissKnife::respond($message_type, $meter_no);
 
-        SwissKnife::output($result, $meter_no);
+         return SwissKnife::output($result, $meter_no);
         break;
 
         case 2:
-        $pending = ServerRequest::where('meter_number', $meter_no)->where('done', 0)->orderBy('created_at', 'desc')->first();
+        $pending = ServerRequest::where('meter_id', $meter->id)->where('done', 0)->orderBy('created_at', 'desc')->first();
         $result = SwissKnife::respond($message_type, $meter_no);
         if (!empty($pending)) {
             $key = $pending->request_key;
@@ -84,7 +84,7 @@ class CollectorController extends Controller
             $pending->save();
         }
 
-        SwissKnife::output($result, $meter_no);
+        return SwissKnife::output($result, $meter_no);
         break;
 
         case 3:
@@ -102,7 +102,7 @@ class CollectorController extends Controller
         $warning->warning_max = $max;
         $warning->save();
 
-        SwissKnife::output($result, $meter_no);
+        return SwissKnife::output($result, $meter_no);
         break;
 
         case 4:
@@ -113,7 +113,7 @@ class CollectorController extends Controller
         $theft->collected_date = $date;
         $theft->save();
         $result = SwissKnife::respond($message_type,$meter_no);
-        SwissKnife::output($result,$meter_no);
+        return SwissKnife::output($result,$meter_no);
         break;
 
         case 8:
@@ -127,7 +127,7 @@ class CollectorController extends Controller
 
         $result = SwissKnife::respond($message_type, $meter_no);
 
-        SwissKnife::output($result, $meter_no);
+        return SwissKnife::output($result, $meter_no);
         break;
         }
     }
