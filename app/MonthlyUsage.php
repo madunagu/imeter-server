@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 
-use Mpociot\Firebase\SyncsWithFirebase;
+use App\Custom\SyncsWithFirestore;
 
 use App\Usage;
 use App\YearlyUsage;
@@ -14,7 +14,7 @@ use App\DailyUsage;
 
 class MonthlyUsage extends Usage
 {
-    use SyncsWithFirebase;
+    use SyncsWithFirestore;
 
     public static $key = 'month';
     public static $checker_function = 'isSameDay';

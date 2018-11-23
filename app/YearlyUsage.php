@@ -5,13 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-use Mpociot\Firebase\SyncsWithFirebase;
+use App\Custom\SyncsWithFirestore;
 use App\Usage;
 use App\MonthlyUsage;
 
 class YearlyUsage extends Usage
 {
-    use SyncsWithFirebase;
+    use SyncsWithFirestore;
     public static $key = 'year';
     //
     public function save_or_not()

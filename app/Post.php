@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Mpociot\Firebase\SyncsWithFirebase;
+use App\Custom\SyncsWithFirestore;
 
 class Post extends Model
 {
-    use SyncsWithFirebase;
+    use SyncsWithFirestore;
 
     protected $table = 'posts';
 

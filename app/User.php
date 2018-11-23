@@ -3,14 +3,14 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Mpociot\Firebase\SyncsWithFirebase;
+use App\Custom\SyncsWithFirestore;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
-    use SyncsWithFirebase;
+    use SyncsWithFirestore;
 
     /**
      * The attributes that are mass assignable.

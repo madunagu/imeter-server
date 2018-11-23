@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Mpociot\Firebase\SyncsWithFirebase;
+use App\Custom\SyncsWithFirestore;
 use App\Usage;
 
 class WeeklyUsage extends Usage
 {
-    use SyncsWithFirebase;
+    use SyncsWithFirestore;
 
     public static $key = 'week';
 

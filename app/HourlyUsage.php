@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 
-use Mpociot\Firebase\SyncsWithFirebase;
+use App\Custom\SyncsWithFirestore;
 
 use App\Usage;
 use App\DailyUsage;
 
 class HourlyUsage extends Usage
 {
-    use SyncsWithFirebase;
+    use SyncsWithFirestore;
 
     public static $key = 'hour';
     public static $checker_function = 'isSameDay';
