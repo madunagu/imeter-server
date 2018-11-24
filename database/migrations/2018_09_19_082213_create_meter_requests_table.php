@@ -17,7 +17,7 @@ class CreateMeterRequestsTable extends Migration
             $table->increments('id');
             $table->string('meter_number');
             $table->string('message_type');
-            $table->string('body');
+            $table->text('body');
             $table->bigInteger('sent_time');
             $table->bigInteger('recieved_time');
             $table->bigInteger('time_lag');

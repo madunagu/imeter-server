@@ -63,17 +63,20 @@ class CollectorTest extends TestCase
     {
         $params = [
             "MN"=>"01223567AB", // This is the meter number
-            "Msg"=> 1, // The message type of for regular meter reading
+            "Msg"=> 8, // The message type of for regular meter reading
             "S"=>"2243575687", // POSIX Timestamp in seconds of the request message
             "CT"=>"2243575687", // POSIX Timestamp in seconds of the capture time request message
             "Bal"=>"113.85", // Balance in Watt-hour
             "WH"=>[33.2234,152.1048,3.2464,84.8493,1.3442,0.3902,0.0000,0.0000,0.11,14.0023,77.0236,49.3349, 33.2234,152.1048,0.000,0.0000,0.0000,0.000,0.0000,0.0000,0.11,14.0023,77.0236,49.3349], // Consumed energy in the previous hour
             "Vac"=>"224.87",
             "A"=>"2.1031",
+            "AT"=>"253",
             "P"=>"425.6317",
             "Hz"=> "60",
             "temp"=>"242",
             "TOU"=> "31.00",
+            "Bat"=>"123.33",
+            "On"=> [[1,224357880], [0,224357970], [1,224357000]]
         ];
         $params = json_encode($params);
         $response = $this->withHeaders([

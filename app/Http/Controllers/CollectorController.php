@@ -14,6 +14,7 @@ use App\Warning;
 use App\Tamper;
 use App\MeterRequest;
 use App\EnergyBudget;
+use Illuminate\Support\Carbon;
 
 class CollectorController extends Controller
 {
@@ -123,7 +124,7 @@ class CollectorController extends Controller
 
                 $balance = $params->Bal;
                 $usage = $params->WH;
-                $day = Carbon::createFromTimestamp($params->date)->day;
+                $day = Carbon::createFromTimestamp($date)->day;
                 $daily_usage = DailyUsage::make_and_save($meter->id, (int)$date, $usage, $day);
 
                 #here save other regular meter data
