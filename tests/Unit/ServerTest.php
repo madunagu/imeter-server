@@ -15,7 +15,7 @@ class ServerTest extends TestCase
 
     public function testLogin()
     {
-        $user = User::where('id',1)->first();
+        $user = User::find(1);
         $params = [
             "email"=>$user->email,
             "password"=> $user->password,
@@ -28,7 +28,7 @@ class ServerTest extends TestCase
                     $params
                 );
         Storage::put('login.json', json_encode($response->json()));
-
+error_log(json_encode($response->json()));
         $response
             ->assertStatus(200)
             ->assertJsonFragment([
