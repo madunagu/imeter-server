@@ -37,18 +37,20 @@ class AuthController extends Controller
         $password = $request->password;
 
         $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
-        $verification_code = str_random(30); //Generate verification code
-        DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
-        $subject = "Please verify your email address.";
-        Mail::send(
-            'mail.verify',
-            ['name' => $name, 'verification_code' => $verification_code],
-            function ($mail) use ($email, $name, $subject) {
-                $mail->from(getenv('FROM_EMAIL_ADDRESS'), "iMeter");
-                $mail->to($email, $name);
-                $mail->subject($subject);
-            }
-        );
+
+        //THIS LINE WAS COMMENTED TO ENABLE UNVERIFIED USERS
+//        $verification_code = str_random(30); //Generate verification code
+//        DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
+//        $subject = "Please verify your email address.";
+//        Mail::send(
+//            'mail.verify',
+//            ['name' => $name, 'verification_code' => $verification_code],
+//            function ($mail) use ($email, $name, $subject) {
+//                $mail->from(getenv('FROM_EMAIL_ADDRESS'), "iMeter");
+//                $mail->to($email, $name);
+//                $mail->subject($subject);
+//            }
+//        );
         return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
     }
 
@@ -101,7 +103,8 @@ class AuthController extends Controller
             return response()->json(['success'=> false, 'error'=> $validator->messages()], 401);
         }
 
-        $credentials['is_verified'] = 1;
+        //THIS LINE WAS COMMENTED TO ENABLE UNVERIFIED USERS
+        //$credentials['is_verified'] = 1;
 
         try {
             // attempt to verify the credentials and create a token for the user
@@ -137,11 +140,11 @@ class AuthController extends Controller
 
 
     /**
-    * API Recover Password
-    *
-    * @param Request $request
-    * @return \Illuminate\Http\JsonResponse
-    */
+     * API Recover Password
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function recover(Request $request)
     {
         $user = User::where('email', $request->email)->first();

@@ -15,7 +15,7 @@ class CreateHourlyUsagesTable extends Migration
     {
         Schema::create('hourly_usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->string('meter_id');
             $table->decimal('usage',50,12);
             $table->decimal('cost',50,12);
             $table->decimal('tarrif',5,3);

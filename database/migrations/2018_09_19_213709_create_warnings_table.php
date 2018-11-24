@@ -16,7 +16,7 @@ class CreateWarningsTable extends Migration
         Schema::create('warnings', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('collected_date');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->string('warning_type');
             $table->string('warning_value');
             $table->string('warning_max');

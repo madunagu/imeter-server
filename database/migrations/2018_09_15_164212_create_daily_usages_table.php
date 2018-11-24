@@ -15,7 +15,7 @@ class CreateDailyUsagesTable extends Migration
     {
         Schema::create('daily_usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meter_number');
+            $table->integer('meter_id');
             $table->decimal('usage',20,8);
             $table->decimal('cost',20,8);
             $table->decimal('tarrif',5,3);

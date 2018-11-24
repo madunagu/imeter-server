@@ -12,10 +12,10 @@ class Usage extends Model
     public $make_children;
     public $make_parent;
 
-    public static function make_and_save(string $meter_number, int $date, $WH, $value = 24, bool $make_children = false, $make_parent = false)
+    public static function make_and_save(int $meter_id, int $date, $WH, $value = 24, bool $make_children = false, $make_parent = false)
     {
         $usage = new static();
-        $usage->meter_number = $meter_number;
+        $usage->meter_id = $meter_id;
         $usage->collected_date = $date;
         $usage->{static::$key} = $value;
         #get the tarrif then set it
@@ -32,7 +32,7 @@ class Usage extends Model
     public function get_last_usage()
     {
         $last_usage = 0;
-        $last_two = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->take(2)->get();
+        $last_two = static::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->take(2)->get();
         if (!empty($last_two) && !empty($last_two[0]) && $last_two[0] != $this) {
             $last = $last_two[0];
         }
@@ -62,17 +62,17 @@ class Usage extends Model
 
     public function get_tarrif()
     {
-        $meter = Meter::where('number', $this->meter_number)->first();
+        $meter = Meter::find($this->meter_id);
         if ($meter) {
             #that meter is verified continue
             return $meter->tarrif;
         } else {
-            #that is an unverified meter lets know the meter_no
-            $unverified = new UnVerified();
-            $unverified->meter_number = $this->meter_number;
-            $unverified->save();
-
-            die('unidentified meter');
+//            #that is an unverified meter lets know the meter_no
+//            $unverified = new UnVerified();
+//            $unverified->meter_number = $this->meter_number;
+//            $unverified->save();
+//
+//            die('unidentified meter');
         }
     }
 

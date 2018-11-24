@@ -23,7 +23,7 @@ class MonthlyUsage extends Usage
 
     public function set_parent_id()
     {
-        $yearly = YearlyUsage::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
+        $yearly = YearlyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($yearly) {
             $yearly_date = Carbon::createFromTimestamp($yearly->collected_date);
             if ($yearly_date->isSameYear($this->c_time())) {
@@ -35,13 +35,13 @@ class MonthlyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        $yearly = YearlyUsage::make_and_save($this->meter_number, $this->collected_date, $this->usage, $this->c_time()->year);
+        $yearly = YearlyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->year);
         $this->yearly_usage_id = $yearly->id;
     }
     public function save_or_not()
     {
         #here check if it is a duplicate
-        $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
+        $old = static::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
             if ($old_date->isSameMonth($this->c_time())) {

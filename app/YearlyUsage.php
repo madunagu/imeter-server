@@ -17,7 +17,7 @@ class YearlyUsage extends Usage
     public function save_or_not()
     {
         #here check if it is a duplicate
-        $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
+        $old = static::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
             if ($old_date->isSameYear($this->c_time())) {

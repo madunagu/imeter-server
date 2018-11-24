@@ -40,6 +40,10 @@ class Meter extends Model
         return $this->hasMany('App\ServerRequest');
     }
 
+    public static function findByUser($user){
+        return Meter::where('user_id',$user->id)->first();
+    }
+
     public function getLastStatistics(): MeterStatistics
     {
         $stat = MeterStatistics::where('meter_id', $this->id)->orderBy('collected_date', 'desc')->first();
@@ -60,14 +64,14 @@ class Meter extends Model
             return response()->json(['success'=>true,[
                 'there is a pending power on already',
                 'please wait for the meter to recieve the request']
-                ]);
+            ]);
         }
 
         if ($status!=PowerToggle::$disconnected) {
             return response()->json(['success'=>false,[
                 'You are not authorised to perform this action',
                 'please contact you meter administrator or disco for rectification']
-                ]);
+            ]);
         }
 
         $power_toggle = new PowerToggle();
@@ -99,14 +103,14 @@ class Meter extends Model
             return response()->json(['success'=>true,[
                 'there is a pending power off already',
                 'please wait for the meter to recieve the request']
-                ]);
+            ]);
         }
 
         if ($status!=PowerToggle::$connected) {
             return response()->json(['success'=>false,[
                 'You are not authorised to perform this action',
                 'please contact you meter administrator or disco for rectification']
-                ]);
+            ]);
         }
 
         $power_toggle = new PowerToggle();
@@ -149,21 +153,8 @@ class Meter extends Model
         return response()->json(['success'=>true,['succesfully disconnected']],200);
     }
 
-    public function setEnergyBudget($budget, $type){
-        $energy_budget = new EnergyBudget();
-        $energy_budget->meter_id = $this->id;
-        $energy_budget->energy_budget = SwissKnife::ensurePositive($budget);
-        $energy_budget->enforcement = $type;
-        $energy_budget->save();
+    public static function setEnergyBudget($budget, $type){
 
-        $server_request = new ServerRequest();
-        $server_request->meter_id = $this->id;
-        $server_request->request_type = ServerRequest::$requestTypeEnergyBudget;
-        $server_request->request_key = ServerRequest::$requestKeyEnergyBudget;
-        $server_request->request_value = $meter_recharge->amount;
-        $server_request->save();
-
-        return response()->json(['success'=>true,['succesfully set Energy Budget']],200);
     }
 
     public function pushIOTData($data){

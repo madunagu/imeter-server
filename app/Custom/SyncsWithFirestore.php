@@ -49,20 +49,19 @@ trait SyncsWithFirestore
      */
     protected function saveToFirestore($mode)
     {
-        if (is_null($this->firestoreClient)) {
-            $this->initialize();
-        }
-
-        $path = $this->getTable() . '/' . $this->getKey();
-        switch ($mode) {
-            case 'set':
-                $this->getFirestoreCollection()->document($this->getKey())->set($this->fresh()->toArray());
-                break;
-            case 'update':
-                $this->getFirestoreCollection()->document($this->getKey())->update($this->fresh()->toArray());
-                break;
-            case 'delete':
-                $this->getFirestoreCollection()->document($this->getKey())->delete();
-        }
+//        if (is_null($this->firestoreClient)) {
+//            $this->initialize();
+//        }
+//
+//        switch ($mode) {
+//            case 'set':
+//                $this->getFirestoreCollection()->document($this->getKey())->set($this->fresh()->toArray());
+//                break;
+//            case 'update':
+//                $this->getFirestoreCollection()->document($this->getKey())->update($this->fresh()->toArray());
+//                break;
+//            case 'delete':
+//                $this->getFirestoreCollection()->document($this->getKey())->delete();
+//        }
     }
 }

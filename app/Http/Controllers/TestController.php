@@ -10,7 +10,10 @@ class TestController extends Controller
 {
     public function test(Request $request){
     	echo 'here';
-    	$this->initialize();
+    	phpinfo();
+    	print_r(xdebug_get_code_coverage());
+
+    	//$this->initialize();
 
     }
 

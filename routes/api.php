@@ -43,8 +43,8 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         'uses'=>'MeterController@rechargeMeter'
     ]);
 
-    Route::post('/energy-balance', [
-        'uses'=>'MeterController@setEnergyBalance'
+    Route::post('/energy-budget', [
+        'uses'=>'MeterController@setEnergyBudget'
     ]);
 
     Route::post('/iot-data', [

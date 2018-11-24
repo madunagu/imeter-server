@@ -19,9 +19,8 @@ class CreateServerRequestsTable extends Migration
             $table->string('request_type');
             $table->string('request_key');
             $table->string('request_value');
-            $table->bigInteger('done_time');
-            $table->integer('relative_id');
-            $table->boolean('done');
+            $table->bigInteger('done_time')->nullable(true);
+        //    $table->integer('relative_id');
             $table->timestamps();
         });
     }

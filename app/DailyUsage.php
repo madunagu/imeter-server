@@ -32,7 +32,7 @@ class DailyUsage extends Usage
                 $total += $usage;
                 #noticed presence of infinite loop
                 if ($this->make_children) {
-                    $hourly = HourlyUsage::make_and_save($this->meter_number, $this->collected_date, $usage, $hour);
+                    $hourly = HourlyUsage::make_and_save($this->meter_id, $this->collected_date, $usage, $hour);
                 }
                 $hour++;
             }
@@ -40,7 +40,7 @@ class DailyUsage extends Usage
         } else {
             #noticed the same
             if ($this->make_children) {
-                $hourly = HourlyUsage::make_and_save($this->meter_number, $this->collected_date, $usages, $hour);
+                $hourly = HourlyUsage::make_and_save($this->meter_id, $this->collected_date, $usages, $hour);
             }
             $this->usage = $usages;
         }
@@ -48,7 +48,7 @@ class DailyUsage extends Usage
 
     public function set_parent_id()
     {
-        $monthly = MonthlyUsage::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
+        $monthly = MonthlyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($monthly) {
             $monthly_date = Carbon::createFromTimestamp($monthly->collected_date);
             if ($monthly_date->isSameMonth($this->c_time())) {
@@ -59,14 +59,14 @@ class DailyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        $monthly = MonthlyUsage::make_and_save($this->meter_number, $this->collected_date, $this->usage, $this->c_time()->month);
+        $monthly = MonthlyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->month);
         $this->monthly_usage_id = $monthly->id;
     }
 
     public function save_or_not()
     {
         #here check if it is a duplicate
-        $old = static::where('meter_number', $this->meter_number)->orderBy('collected_date', 'desc')->first();
+        $old = static::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($old) {
             $old_date = Carbon::createFromTimestamp($old->collected_date);
             if ($old_date->isSameDay($this->c_time())) {

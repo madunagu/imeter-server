@@ -38,7 +38,7 @@ class EnergyBudget extends Model
     {
         switch ($timeKey) {
             case 'H':
-            return HourlyUsage::where('meter_id', $this->$meter_id)->limit(24)->get();
+            return HourlyUsage::where('meter_id', $this->meter_id)->limit(24)->get();
             break;
             case 'D':
             return DailyUsage::where('meter_id', $this->meter_id)->limit(30)->get();

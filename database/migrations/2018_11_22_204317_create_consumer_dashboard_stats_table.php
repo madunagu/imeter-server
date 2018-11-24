@@ -18,6 +18,7 @@ class CreateConsumerDashboardStatsTable extends Migration
             $table->string('name');
             $table->string('display');
             $table->string('color');
+            $table->string('value');
             $table->timestamps();
         });
     }

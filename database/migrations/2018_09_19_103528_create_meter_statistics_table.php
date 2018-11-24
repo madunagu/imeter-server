@@ -19,6 +19,7 @@ class CreateMeterStatisticsTable extends Migration
             $table->decimal('average_temprature',15,8);
             $table->decimal('naira_balance',15,8);
             $table->integer('connect_status');
+            $table->decimal('airtime',15,8);
             $table->decimal('energy_balance',15,8);
             $table->decimal('average_voltage',50,12);
             $table->decimal('average_current',50,12);
