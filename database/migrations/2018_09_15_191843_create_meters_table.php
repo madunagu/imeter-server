@@ -17,11 +17,10 @@ class CreateMetersTable extends Migration
             $table->increments('id');
             $table->string('number')->unique();
             $table->integer('user_id');
-            $table->decimal('tarrif',8,3);
             $table->string('balance');
-            $table->string('address');
             $table->string('phone');
-            $table->string('type');
+            $table->integer('disco_id');
+            $table->string('meter_type_id');
             $table->timestamps();
         });
     }

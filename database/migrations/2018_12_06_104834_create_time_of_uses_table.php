@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTOUsTable extends Migration
+class CreateTimeOfUsesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTOUsTable extends Migration
      */
     public function up()
     {
-        Schema::create('t_o_us', function (Blueprint $table) {
+        Schema::create('time_of_uses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('meter_id');
             $table->decimal('tarrif',8,3);
@@ -29,6 +29,6 @@ class CreateTOUsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_o_us');
+        Schema::dropIfExists('time_of_uses');
     }
 }

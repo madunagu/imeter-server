@@ -16,6 +16,7 @@ class CreateDiscosTable extends Migration
         Schema::create('discos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('short');
             $table->timestamps();
         });
     }
