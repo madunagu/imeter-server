@@ -19,34 +19,8 @@ class DailyUsage extends Usage
     public static $parent_id = 'monthly_usage_id';
     public static $parent_name = MonthlyUsage::class;
 
-    public function setUsages($usages)
-    {
-        $total = 0;
-        $hour = 0;
-        #if it is not an array
 
-        #if the usages is an array
-        if (is_array($usages)) {
-            foreach ($usages as $usage) {
-                #here create all the hourly usages
-                $total += $usage;
-                #noticed presence of infinite loop
-                if ($this->make_children) {
-                    $hourly = HourlyUsage::make_and_save($this->meter_id, $this->collected_date, $usage, $hour);
-                }
-                $hour++;
-            }
-            $this->usage = $total;
-        } else {
-            #noticed the same
-            if ($this->make_children) {
-                $hourly = HourlyUsage::make_and_save($this->meter_id, $this->collected_date, $usages, $hour);
-            }
-            $this->usage = $usages;
-        }
-    }
-
-    public function set_parent_id()
+    public function set_parent_id(Meter $meter)
     {
         $monthly = MonthlyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($monthly) {
@@ -59,7 +33,7 @@ class DailyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        $monthly = MonthlyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->month);
+        $monthly = MonthlyUsage::make_and_save($meter, $this->collected_date, $this->usage, $this->cost, $this->c_time()->month);
         $this->monthly_usage_id = $monthly->id;
     }
 
@@ -89,4 +63,3 @@ class DailyUsage extends Usage
         $this->calculate_params($hours);
     }
 }
-

@@ -28,4 +28,13 @@ class SwissKnife
     public static function ensurePositive($number){
         return abs($number);
     }
+
+    public static function reportError(string $error){
+        #logic for reporting error
+        die($error);
+    }
+
+    public static function randMeterNo(){
+        return \str_random(10);
+    }
 }

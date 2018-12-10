@@ -16,6 +16,17 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Event' => [
             'App\Listeners\EventListener',
         ],
+        'App\Events\MeterDataReceived' => [
+            'App\Listeners\CalculateEnergyBudget',
+            'App\Listeners\UpdateDashboard'
+        ],
+        'App\Events\TamperDetected' => [
+            'App\Listeners\NotifyUser',
+            'App\Listeners\NotifyDisco'
+        ],
+        'App\Events\PaymentCompleted' => [
+            'App\Listeners\RechargeMeter',
+        ],
     ];
 
     /**

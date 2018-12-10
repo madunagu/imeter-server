@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriesTableSeeder::class);
         $this->call(PostsTableSeeder::class);
         $this->call(MeterTypesTableSeeder::class);
-        $this->call(TOUTableSeeder::class);
-
+        $this->call(TimeOfUseTableSeeder::class);
+        $this->call(DiscosTableSeeder::class);
     }
 }

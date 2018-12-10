@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\MeterStatistics;
 use Illuminate\Http\Request;
-use Mockery\CountValidator\Exception;
 use App\DailyUsage;
 use App\HourlyUsage;
 use App\Meter;
@@ -23,8 +22,8 @@ class CollectorController extends Controller
     {
         $parameters = $request['Password'];
         try {
-            $params = json_decode($parameters);
-        } catch (Exception $e) {
+            $params = \json_decode($parameters);
+        } catch (\Exception $e) {
             die("invalid data format");
         }
         try {
@@ -58,12 +57,13 @@ class CollectorController extends Controller
                 $hour = $params->H;
                 $balance = $params->Bal;
                 $usage = $params->WH;
+                $cost = $params->Cost;
 
                 #here update the meter balance
                 $meter->balance = empty($balance)? $meter->balance : $balance;
                 $meter->save();
 
-                $hourly_usage = HourlyUsage::make_and_save($meter->id, (int)$date, $usage, $hour, true);
+                $hourly_usage = HourlyUsage::make_and_save($meter, (int)$date, $usage, $cost, $hour);
 
                 EnergyBudget::compareUsage($meter->id);
 
@@ -123,10 +123,11 @@ class CollectorController extends Controller
                 #here save the meter readings
 
                 $balance = $params->Bal;
-                $usage = $params->WH;
-                $day = Carbon::createFromTimestamp($date)->day;
-                $daily_usage = DailyUsage::make_and_save($meter->id, (int)$date, $usage, $day);
-
+                $usages = $params->WH;
+                $costs =  $params->Cost;
+                foreach($usages as $key => $usage){
+                    $hourly_usage = HourlyUsage::make_and_save($meter, (int)$date, $usage, $costs[$key], $key);
+                }
                 #here save other regular meter data
                 $meterStat = new MeterStatistics();
                 $meterStat->meter_id = $meter->id;

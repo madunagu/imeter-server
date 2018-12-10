@@ -15,11 +15,10 @@ class MetersTableSeeder extends Seeder
         $alpha = new Meter();
         $alpha->number = '01223567AB';
         $alpha->user_id = 1;
-        $alpha->tarrif = 14;
         $alpha->balance = 5000;
-        $alpha->address = 'somewhere';
+        $alpha->disco_id = 1;
         $alpha->phone = '+2348065708630';
-        $alpha->type = 'meter_type';
+        $alpha->meter_type_id = 1;
         $alpha->save();
 
         //

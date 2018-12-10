@@ -70,6 +70,10 @@ Route::post('/collector', [
     'uses'=>'CollectorController@collect'
 ]);
 
+Route::post('/callibrator', [
+    'uses'=>'CalibrationController@bootUp'
+]);
+
 Route::post('/fota', [
     'uses'=>'FOTAController@saveBIN'
 ]);

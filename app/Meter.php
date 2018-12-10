@@ -9,6 +9,7 @@ use App\PowerToggle;
 use App\MeterRequest;
 use App\MeterStatistics;
 use App\MeterRecharge;
+use App\Custom\SwissKnife;
 
 class Meter extends Model
 {
@@ -40,8 +41,9 @@ class Meter extends Model
         return $this->hasMany('App\ServerRequest');
     }
 
-    public static function findByUser($user){
-        return Meter::where('user_id',$user->id)->first();
+    public static function findByUser($user)
+    {
+        return Meter::where('user_id', $user->id)->first();
     }
 
     public function getLastStatistics(): MeterStatistics
@@ -54,7 +56,7 @@ class Meter extends Model
     public function toggleOn()
     {
         $status = $this->getLastStatistics()->connect_status;
-        $pending_power_on = PowerToggle::where('meter_id', $this->id)->where('code',PowerToggle::$connected)->where('done', '0')->orderBy('created_at', 'desc')->first();
+        $pending_power_on = PowerToggle::where('meter_id', $this->id)->where('code', PowerToggle::$connected)->where('done', '0')->orderBy('created_at', 'desc')->first();
 
         if ($status==PowerToggle::$connected) {
             return response()->json(['success'=>true,['already connected']], 200);
@@ -87,13 +89,13 @@ class Meter extends Model
         $server_request->request_value = PowerToggle::$connected;
         $server_request->save();
 
-        return response()->json(['success'=>true,['succesfully disconnected']],200);
+        return response()->json(['success'=>true,['succesfully disconnected']], 200);
     }
 
     public function toggleOff()
     {
         $status = $this->getLastStatistics()->connect_status;
-        $pending_power_off = PowerToggle::where('meter_id', $this->id)->where('code',PowerToggle::$disconnected)->where('done', '0')->orderBy('created_at', 'desc')->first();
+        $pending_power_off = PowerToggle::where('meter_id', $this->id)->where('code', PowerToggle::$disconnected)->where('done', '0')->orderBy('created_at', 'desc')->first();
 
         if ($status==PowerToggle::$disconnected) {
             return response()->json(['success'=>true,['already disconnected']], 200);
@@ -115,7 +117,8 @@ class Meter extends Model
 
         $power_toggle = new PowerToggle();
         $power_toggle->meter_id = $this->id;
-        $power_toggle->code = PowerToggle::$disconnected;;
+        $power_toggle->code = PowerToggle::$disconnected;
+        ;
         $power_toggle->origin = PowerToggle::$web_originated;
         $power_toggle->save();
 
@@ -123,10 +126,11 @@ class Meter extends Model
         $server_request->meter_id = $this->id;
         $server_request->request_type = ServerRequest::$requestTypeToggleConnection;
         $server_request->request_key = ServerRequest::$requestKeyToggleConnection;
-        $server_request->request_value = PowerToggle::$disconnected;;
+        $server_request->request_value = PowerToggle::$disconnected;
+        ;
         $server_request->save();
 
-        return response()->json(['success'=>true,['succesfully disconnected']],200);
+        return response()->json(['success'=>true,['succesfully disconnected']], 200);
     }
 
     public function recharge($amount)
@@ -150,15 +154,26 @@ class Meter extends Model
         $server_request->request_value = $meter_recharge->amount;
         $server_request->save();
 
-        return response()->json(['success'=>true,['succesfully disconnected']],200);
+        return response()->json(['success'=>true,['succesfully disconnected']], 200);
     }
 
-    public static function setEnergyBudget($budget, $type){
-
+    public static function setEnergyBudget($budget, $type)
+    {
     }
 
-    public function pushIOTData($data){
+    public static function generateMeterNumber(): string
+    {
+        #generate unique meter number
+        $repeat = true;
+        while ($repeat) {
+            $rand = SwissKnife::randMeterNo();
+            $repeat =!Meter::where('number', $rand)->first();
+        }
+        return $rand;
+    }
+
+    public function pushIOTData($data)
+    {
         # here logic for saving IOT Data comes in
-
     }
 }

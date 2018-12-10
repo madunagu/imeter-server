@@ -9,22 +9,26 @@ use App\Meter;
 
 class Usage extends Model
 {
-    public $make_children;
-    public $make_parent;
-
-    public static function make_and_save(int $meter_id, int $date, $WH, $value = 24, bool $make_children = false, $make_parent = false)
+    public static function make_and_save(Meter $meter, int $date, float $WH, float $cost = 0, int $value = 24)
     {
         $usage = new static();
-        $usage->meter_id = $meter_id;
+        $usage->meter_id = $meter->id;
         $usage->collected_date = $date;
         $usage->{static::$key} = $value;
+        #set usage
+        $usage->usage = $WH;
+        #set cost
+        $usage->cost = $cost;
         #get the tarrif then set it
-        $usage->tarrif = $usage->get_tarrif();
-        $usage->make_children = $make_children;
-        $usage->make_parent = $make_parent;
-        $usage->setUsages($WH);
-        $usage->process();
-        $usage->set_parent_id();
+        $tarrif = $usage->get_tarrif($meter);
+        if (static::class==HourlyUsage::class) {
+            $usage->tarrif = $tarrif[$value];
+            if ($usage->cost!=($usage->usage * $usage->tarrif)) {
+                #here logic for thowing error of different costs
+            }
+        }
+        $usage->process($tarrif);
+        $usage->set_parent_id($meter);
         $usage->save_or_not();
         return $usage;
     }
@@ -50,9 +54,8 @@ class Usage extends Model
         $this->usage = $WH;
     }
 
-    public function set_parent_id()
+    public function set_parent_id(Meter $meter)
     {
-
     }
     public function save_or_not()
     {
@@ -60,20 +63,10 @@ class Usage extends Model
         $this->save();
     }
 
-    public function get_tarrif()
+    public function get_tarrif(Meter $meter):array
     {
-        $meter = Meter::find($this->meter_id);
-        if ($meter) {
-            #that meter is verified continue
-            return $meter->tarrif;
-        } else {
-//            #that is an unverified meter lets know the meter_no
-//            $unverified = new UnVerified();
-//            $unverified->meter_number = $this->meter_number;
-//            $unverified->save();
-//
-//            die('unidentified meter');
-        }
+        #get the array of TOU for that meter
+        return TimeOfUse::getArray($meter);
     }
 
     public function c_time()
@@ -83,7 +76,6 @@ class Usage extends Model
 
     public function process()
     {
-        $this->cost = $this->usage * $this->tarrif;
         $last_usage = $this->get_last_usage();
         $this->delta = abs($this->usage - $last_usage);
         #delta is a boolean if the change is positive or negative
@@ -94,21 +86,19 @@ class Usage extends Model
     {
     }
 
-    public function calculate_params($children){
-        if(count($children)==0){
+    public function calculate_params($children)
+    {
+        if (count($children)==0) {
             return;
         }
         $total_usage = 0;
         $total_cost = 0;
-        $total_tarrif = 0;
         foreach ($children as $child) {
             $total_cost += $child->cost;
             $total_usage += $child->usage;
-            $total_tarrif+=$child->tarrif;
         }
         $this->cost = $total_cost;
         $this->usage = $total_usage;
-        $this->tarrif = round($total_tarrif/count($children),3);
         $last_usage = $this->get_last_usage();
         $this->delta = abs($this->usage - $last_usage);
         #delta is a boolean if the change is positive or negative

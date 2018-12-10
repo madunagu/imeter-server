@@ -21,7 +21,7 @@ class MonthlyUsage extends Usage
     public static $parent_id = 'daily_usage_id';
     public static $parent_name = YearlyUsage::class;
 
-    public function set_parent_id()
+    public function set_parent_id(Meter $meter)
     {
         $yearly = YearlyUsage::where('meter_id', $this->meter_id)->orderBy('collected_date', 'desc')->first();
         if ($yearly) {
@@ -35,9 +35,10 @@ class MonthlyUsage extends Usage
             }
         }
         #if there is no monthly yet create one
-        $yearly = YearlyUsage::make_and_save($this->meter_id, $this->collected_date, $this->usage, $this->c_time()->year);
+        $yearly = YearlyUsage::make_and_save($meter, $this->collected_date, $this->usage, $this->cost, $this->c_time()->year);
         $this->yearly_usage_id = $yearly->id;
     }
+
     public function save_or_not()
     {
         #here check if it is a duplicate
