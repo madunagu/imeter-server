@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMetersTable extends Migration
+class CreateFOTAUpdatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateMetersTable extends Migration
      */
     public function up()
     {
-        Schema::create('meters', function (Blueprint $table) {
+        Schema::create('f_o_t_a_updates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('number')->unique();
-            $table->integer('user_id');
-            $table->string('balance');
-            $table->string('phone');
-            $table->string('chip_id');
-            $table->integer('disco_id');
-            $table->string('meter_type_id');
+            $table->string('file_name');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ class CreateMetersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meters');
+        Schema::dropIfExists('f_o_t_a_updates');
     }
 }

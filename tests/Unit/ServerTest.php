@@ -15,20 +15,20 @@ class ServerTest extends TestCase
 
     public function testLogin()
     {
-        $user = User::find(1);
+        $user = User::create(["name"=>"Ekene Test","email"=>"ekene@gmail.com","password"=>'test1',"is_verified"=>true]);
         $params = [
             "email"=>$user->email,
-            "password"=> $user->password,
+            "password"=> 'test1',
         ];
         $response = $this->withHeaders([
-                        'X-Header' => 'Value',
-                    ])->json(
-                        'POST',
-                        '/api/collector',
-                    $params
-                );
+            'X-Header' => 'Value',
+        ])->json(
+            'POST',
+            '/api/login',
+            $params
+        );
         Storage::put('login.json', json_encode($response->json()));
-error_log(json_encode($response->json()));
+        error_log(\json_encode($response->json()));
         $response
             ->assertStatus(200)
             ->assertJsonFragment([

@@ -17,6 +17,7 @@ class MetersTableSeeder extends Seeder
         $alpha->user_id = 1;
         $alpha->balance = 5000;
         $alpha->disco_id = 1;
+        $alpha->chip_id = 'something';
         $alpha->phone = '+2348065708630';
         $alpha->meter_type_id = 1;
         $alpha->save();

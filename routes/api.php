@@ -71,7 +71,7 @@ Route::post('/collector', [
 ]);
 
 Route::post('/callibrator', [
-    'uses'=>'CalibrationController@bootUp'
+    'uses'=>'BootUpController@bootUp'
 ]);
 
 Route::post('/fota', [

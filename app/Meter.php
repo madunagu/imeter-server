@@ -167,7 +167,13 @@ class Meter extends Model
         $repeat = true;
         while ($repeat) {
             $rand = SwissKnife::randMeterNo();
-            $repeat =!Meter::where('number', $rand)->first();
+           // $repeat =!Meter::where('number', $rand)->first();
+            if(Meter::where('number',$rand)->first()){
+                $repeat = true;
+            }
+            else {
+                $repeat = false;
+            }
         }
         return $rand;
     }

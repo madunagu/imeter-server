@@ -39,7 +39,8 @@ class CollectorTest extends TestCase
             "S"=>"2243575687", // POSIX Timestamp in seconds of the request message
             "CT"=>"2243575687", // POSIX Timestamp in seconds of the capture time request message
             "Bal"=>"113.85", // Balance in Watt-hour
-            "WH"=>"343.85", // Consumed energy in the previous hour
+            "WH"=>"343.85",
+            "Cost"=>"3929.33",// Consumed energy in the previous hour
             "H"=>"13" // The period during which WH above was consumed (i.e. 12:00 - 13:00)
         ];
         $params = json_encode($params);
@@ -68,6 +69,7 @@ class CollectorTest extends TestCase
             "CT"=>"2243575687", // POSIX Timestamp in seconds of the capture time request message
             "Bal"=>"113.85", // Balance in Watt-hour
             "WH"=>[33.2234,152.1048,3.2464,84.8493,1.3442,0.3902,0.0000,0.0000,0.11,14.0023,77.0236,49.3349, 33.2234,152.1048,0.000,0.0000,0.0000,0.000,0.0000,0.0000,0.11,14.0023,77.0236,49.3349], // Consumed energy in the previous hour
+            "Cost"=>[33.2234,152.1048,3.2464,84.8493,1.3442,0.3902,0.0000,0.0000,0.11,14.0023,77.0236,49.3349, 33.2234,152.1048,0.000,0.0000,0.0000,0.000,0.0000,0.0000,0.11,14.0023,77.0236,49.3349], // Consumed energy in the previous hour
             "Vac"=>"224.87",
             "A"=>"2.1031",
             "AT"=>"253",

@@ -22,14 +22,14 @@ class CalibrationTest extends TestCase
             'X-Header' => 'Value',
         ])->json(
             'POST',
-            '/api/collector',
+            '/api/callibrator',
             ['Password'=> $params]
         );
 
         \Log::info($response->json());
         $response
             ->assertStatus(200)
-            ->assertJsonFragment(['Msg' => '9']);
+            ->assertJsonFragment(['Msg' => 9]);
 
     }
 }

@@ -14,6 +14,7 @@ use App\Tamper;
 use App\MeterRequest;
 use App\EnergyBudget;
 use Illuminate\Support\Carbon;
+use Validator;
 
 class CollectorController extends Controller
 {
@@ -26,15 +27,21 @@ class CollectorController extends Controller
         } catch (\Exception $e) {
             die("invalid data format");
         }
-        try {
-            $meter_no = $params->MN;
-            $message_type = $params->Msg;
-            $date = $params->CT;
-            $sent_time = $params->S;
+        $validator = Validator::make((array) $params, [
+            'MN' => 'required',
+            'Msg' => 'required',
+            'CT'=>'required',
+            'S'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return SwissKnife::reportError($validator->errors());
         }
-        catch(Exception $e){
-            die("invalid format required parameters such as collected date, meter number or message type may be missing");
-        }
+        $meter_no = $params->MN;
+        $message_type = $params->Msg;
+        $date = $params->CT;
+        $sent_time = $params->S;
+
         $base_message_type = substr($params->Msg, 0, 1);
         $myReq = new MeterRequest();
         $myReq->meter_number = $meter_no;
@@ -54,6 +61,16 @@ class CollectorController extends Controller
 
         switch ($base_message_type) {
             case 1:
+                $validator = Validator::make((array) $params, [
+                    'H' => 'required',
+                    'Bal' => 'required',
+                    'WH'=>'required',
+                    'Cost'=>'required',
+                ]);
+
+                if ($validator->fails()) {
+                    return SwissKnife::reportError($validator->errors());
+                }
                 $hour = $params->H;
                 $balance = $params->Bal;
                 $usage = $params->WH;
@@ -90,9 +107,17 @@ class CollectorController extends Controller
                 break;
 
             case 3:
+                $validator = Validator::make((array) $params, [
+                    'WT' => 'required',
+                    'Val' => 'required',
+                ]);
+
+                if ($validator->fails()) {
+                    return SwissKnife::reportError($validator->errors());
+                }
                 $type = $params->WT;
                 $val = $params->Val;
-                $max = $params->Max;
+                $max = 100; //$params->Max;
                 $result = SwissKnife::respond($message_type, $meter_no);
 
 
@@ -108,24 +133,49 @@ class CollectorController extends Controller
                 break;
 
             case 4:
+                $validator = Validator::make((array) $params, [
+                    'T' => 'required',
+                ]);
+
+                if ($validator->fails()) {
+                    return SwissKnife::reportError($validator->errors());
+                }
                 $type = $params->T;
                 $theft = new Tamper();
                 $theft->meter_id = $meter->id;
                 $theft->tamper_type = $type;
                 $theft->collected_date = $date;
                 $theft->save();
-                $result = SwissKnife::respond($message_type,$meter_no);
-                return SwissKnife::output($result,$meter_no);
+                $result = SwissKnife::respond($message_type, $meter_no);
+                return SwissKnife::output($result, $meter_no);
                 break;
 
             case 8:
                 #regular meter readings
                 #here save the meter readings
 
+                $validator = Validator::make((array) $params, [
+                    'Bal' => 'required',
+                    'WH' => 'required',
+                    'temp'=>'required',
+                    'On'=>'required',
+                    'AT'=>'required',
+                    'P'=>'required',
+                    'Vac'=>'required',
+                    'A'=>'required',
+                    'Vac'=>'required',
+                    'Hz'=>'required',
+                    'Bat'=>'required',
+                ]);
+
+                if ($validator->fails()) {
+                    return SwissKnife::output($validator->errors(), $meter->number);
+                }
+
                 $balance = $params->Bal;
                 $usages = $params->WH;
                 $costs =  $params->Cost;
-                foreach($usages as $key => $usage){
+                foreach ($usages as $key => $usage) {
                     $hourly_usage = HourlyUsage::make_and_save($meter, (int)$date, $usage, $costs[$key], $key);
                 }
                 #here save other regular meter data
