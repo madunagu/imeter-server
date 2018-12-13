@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Custom\SwissKnife;
 use App\DeletedPost;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -21,7 +22,6 @@ class BlogController extends Controller
         $validator = Validator::make($request->all(), [
             "title" => "required",
             "body" => "required",
-            "user_id"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -34,7 +34,7 @@ class BlogController extends Controller
         $post = new Post();
         $post->title = $request['title'];
         $post->body = $request['body'];
-        $post->user_id = $request['user_id'];
+        $post->user_id = Auth::id();
         $post->views = 0;
         $post->save();
 
@@ -44,10 +44,10 @@ class BlogController extends Controller
             $post->categories()->attach($category);
         }
 
-        return response(
-            compact("successfully inserted post id: $post->id"),
-            200
-        );
+        return response()->json([
+            'success'=>true,
+            'message'=>"successfully inserted post id: $post->id",
+        ]);
     }
 
     public function delete(Request $request)
@@ -67,10 +67,10 @@ class BlogController extends Controller
 
         $post->delete();
 
-        return response(
-            compact("successfully deleted post id: $deleted_post->id"),
-            200
-        );
+        return response()->json([
+            'success'=>true,
+            'message'=>'post successfully deleted'
+        ]);
     }
 
 

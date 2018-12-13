@@ -43,8 +43,7 @@ class ServerTest extends TestCase
         $user =   User::create([
             'name' => $faker->name,
             'email' => $faker->email,
-            'password'=>bcrypt('test'),
-            'is_verified'=>true
+            'password'=>bcrypt('test')
         ]);
 
         $params = [
@@ -89,19 +88,44 @@ class ServerTest extends TestCase
     }
 
 
-     public function testRechargeMeter()
-     {
-         Passport::actingAs(
-             User::find(1)
-         );
+    public function testRechargeMeter()
+    {
+        Passport::actingAs(
+            User::find(1)
+        );
 
-         $response = $this->post(
-             '/api/energy-budget',
-             [
-                 "amount"=>"2000",
-                 "enforcement"=> 'W',
+        $response = $this->post(
+            '/api/energy-budget',
+            [
+                "amount"=>"2000",
+                "enforcement"=> 'W',
+            ]
+        );
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'success' => true
+            ]);
+    }
+
+    // public function testIOTdata()
+    // {
+    // }
+
+    public function testBlogPostCreate()
+    {
+        Passport::actingAs(
+            User::find(1)
+        );
+
+        $response = $this->post(
+            '/api/post',
+            [
+                'title'=>'A test blog post',
+                 "body"=> 'hello this is a blogpost from test no yab me',
              ]
          );
+
          $response
              ->assertStatus(200)
              ->assertJsonFragment([
@@ -109,23 +133,66 @@ class ServerTest extends TestCase
              ]);
      }
 
-    // public function testIOTdata()
-    // {
-    // }
 
-    // public function testBlog()
-    // {
-    // }
+    public function testBlogPostUpdate():void
+    {
+        Passport::actingAs(
+            User::find(1)
+        );
 
-     public function testSmartConnect()
-     {
-         Passport::actingAs(
-             User::find(1)
+        $response = $this->post(
+            '/api/post/2',
+            [
+                'title'=>'A test blog post',
+                "body"=> 'hello this is a blog' . 'post from test no yab me',
+            ]
+        );
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'success' => true
+            ]);
+    }
+
+    public function testBlogPostDelete():void
+    {
+        Passport::actingAs(
+            User::find(1)
+        );
+
+        $response = $this->delete(
+            '/api/post/2'
+        );
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'success' => true
+            ]);
+    }
+
+    public function testBlogList():void
+    {
+        Passport::actingAs(
+            User::find(1)
+        );
+
+        $response = $this->get(
+            '/api/post'
          );
-
-         $response = $this->post('/api/toggle-on');
-
-         $response->assertStatus(200);
-
+         $response
+             ->assertStatus(200);
      }
+
+
+    public function testSmartConnect()
+    {
+        Passport::actingAs(
+            User::find(1)
+        );
+
+        $response = $this->post('/api/toggle-on');
+
+        $response->assertStatus(200);
+
+    }
 }

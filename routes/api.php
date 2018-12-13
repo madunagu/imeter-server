@@ -57,6 +57,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         'uses'=>'BlogController@create'
     ]);
 
+    Route::get('/post', [
+        'uses'=>'BlogController@list'
+    ]);
+
     Route::delete('/post/:id', [
         'uses'=>'BlogController@delete'
     ]);
