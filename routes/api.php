@@ -26,7 +26,7 @@ Route::post('/login', 'AuthController@login');
 
 Route::post('/register', 'AuthController@register');
 
-Route::group(['middleware' => ['jwt.auth']], function () {
+Route::group(['middleware' => ['auth:api']], function () {
     /* here add the jwt protected routes */
     Route::get('/test', function () {
         return response()->json(['foo'=>'bar']);

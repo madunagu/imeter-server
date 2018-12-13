@@ -8,12 +8,16 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
 use DB;
 use Hash;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Mail\Message;
+use App\Http\Resources\User as UserResource;
 
 class AuthController extends Controller
 {
+    use AuthenticatesUsers;
+
     /**
      * API Register
      *
@@ -105,18 +109,19 @@ class AuthController extends Controller
 
         //THIS LINE WAS COMMENTED TO ENABLE UNVERIFIED USERS
         //$credentials['is_verified'] = 1;
+        if ($this->attemptLogin($request)) {
+            $user = $this->guard()->user();
+            $token = $user->createToken('imeter')->accessToken;
 
-        try {
-            // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['success' => false, 'error' => 'We cant find an account with this credentials. Please make sure you entered the right information and you have verified your email address.'], 404);
-            }
-        } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
-            return response()->json(['success' => false, 'error' => 'Failed to login, please try again.'], 500);
+            return response()->json([
+                'user'=> new UserResource($user),
+                'token' => $token,
+                'success'=> true
+            ],200);
         }
-        // all good so return the token
-        return response()->json(['success' => true, 'data'=> [ 'token' => $token ]], 200);
+
+
+        return $this->sendFailedLoginResponse($request);
     }
     /**
      * Log out

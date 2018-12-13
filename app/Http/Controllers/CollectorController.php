@@ -34,6 +34,8 @@ class CollectorController extends Controller
             'S'=>'required',
         ]);
 
+        //TODO: add future time verification failure
+
         if ($validator->fails()) {
             return SwissKnife::reportError($validator->errors());
         }

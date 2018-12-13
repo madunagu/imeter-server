@@ -46,8 +46,7 @@ class CollectorTest extends TestCase
         $params = json_encode($params);
         $response = $this->withHeaders([
             'X-Header' => 'Value',
-        ])->json(
-            'POST',
+        ])->post(
             '/api/collector',
             ['Password'=> $params]
         );
@@ -83,8 +82,7 @@ class CollectorTest extends TestCase
         $params = json_encode($params);
         $response = $this->withHeaders([
             'X-Header' => 'Value',
-        ])->json(
-            'POST',
+        ])->post(
             '/api/collector',
             ['Password'=> $params]
         );

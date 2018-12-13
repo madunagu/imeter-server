@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Usage;
+
 
 class EnergyBudget extends Model
 {
@@ -17,42 +19,41 @@ class EnergyBudget extends Model
 
 
 
-    public function getParentDivisor()
+    public function getParentDivisor(): float
     {
         $parentDivisor =  [
             'H'=>24,
-            'D'=>getDaysInMonth(),
-            'W'=>52,
+            'D'=>$this->getDaysInMonth(),
+            'W'=>4.34524,
             'M'=>12,
             'Y'=>1
         ];
         return $parentDivisor[$this->enforcement];
     }
-    public function getDaysInMonth()
+    public function getDaysInMonth(): int
     {
         $dt = Carbon::now();
         return cal_days_in_month(CAL_GREGORIAN, $dt->month, $dt->year);
     }
 
-    public function getEnergyUsage($timeKey) : Usage
+    public function getEnergyUsage($timeKey)
     {
         switch ($timeKey) {
             case 'H':
-            return HourlyUsage::where('meter_id', $this->meter_id)->limit(24)->get();
+            return HourlyUsage::where('meter_id', $this->meter_id)->orderBy('id', 'desc')->skip(1)->take(1)->get()->first();
             break;
             case 'D':
-            return DailyUsage::where('meter_id', $this->meter_id)->limit(30)->get();
+            return DailyUsage::where('meter_id', $this->meter_id)->orderBy('id', 'desc')->skip(1)->take(1)->get()->first();
             break;
             case 'W':
-            return WeeklyUsage::where('meter_id', $this->meter_id)->limit(5)->get();
+            return WeeklyUsage::where('meter_id', $this->meter_id)->orderBy('id', 'desc')->skip(1)->take(1)->get()->first();
             break;
             case 'M':
-            return MonthlyUsage::where('meter_id', $this->meter_id)->limit(12)->get();
+            return MonthlyUsage::where('meter_id', $this->meter_id)->orderBy('id', 'desc')->skip(1)->take(1)->get()->first();
             break;
             case 'Y':
-            return YearlyUsage::where('meter_id', $this->meter_id)->limit(30)->get();
+            return YearlyUsage::where('meter_id', $this->meter_id)->orderBy('id', 'desc')->skip(1)->take(1)->get()->first();
             break;
-            ;
         }
     }
 
@@ -61,9 +62,14 @@ class EnergyBudget extends Model
         $budget = EnergyBudget::where('meter_id', $meter_id)->orderBy('id', 'desc')->first();
         if ($budget) {
             $parentUsage = $budget->getEnergyUsage($budget->returnUpperEquivalent());
-            if ($budget->energy_budget < ($parentUsage/$budget->getParentDivisor())) {
+            if(!$parentUsage){
+                return;
+            }
+            $parentCost = $parentUsage->cost;
+            $parentDivisor = $budget->getParentDivisor();
+            if ($budget->energy_budget < ($parentCost/$parentDivisor)) {
                 # budget has overflown
-                $averageUsage = ceil($parentUsage/$budget->getParentDivisor());
+                $averageUsage = ceil($parentCost/$parentDivisor);
                 #warn user
                 if($budget->should_shutdown){
                     Meter::where('meter_id',$meter_id)->first()->toggleOff();

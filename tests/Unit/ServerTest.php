@@ -6,29 +6,55 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\User;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Storage;
-
+use Faker\Factory as Faker;
 
 class ServerTest extends TestCase
 {
 
+    public function testRegister()
+    {
+        $faker = Faker::create();
+
+        $params = [
+            "name"=> $faker->name,
+            "email"=> $faker->email,
+            "password"=> 'test',
+        ];
+        $response = $this->json(
+            'POST',
+            '/api/register',
+            $params
+        );
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                "success"=> true,
+            ]);;
+    }
+
+
 
     public function testLogin()
     {
-        $user = User::create(["name"=>"Ekene Test","email"=>"ekene@gmail.com","password"=>'test1',"is_verified"=>true]);
+        $faker = Faker::create();
+
+        $user =   User::create([
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password'=>bcrypt('test'),
+            'is_verified'=>true
+        ]);
+
         $params = [
             "email"=>$user->email,
-            "password"=> 'test1',
+            "password"=> 'test',
         ];
-        $response = $this->withHeaders([
-            'X-Header' => 'Value',
-        ])->json(
-            'POST',
-            '/api/login',
+        $response = $this->post(
+            'api/login',
             $params
         );
-        Storage::put('login.json', json_encode($response->json()));
-        error_log(\json_encode($response->json()));
         $response
             ->assertStatus(200)
             ->assertJsonFragment([
@@ -44,35 +70,44 @@ class ServerTest extends TestCase
 
     public function testEnergyBudget()
     {
-        $login = Storage::get('login.json');
+        Passport::actingAs(
+            User::find(1)
+        );
 
-        $bearer = json_decode($login)->data->token;
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer $bearer",
-        ])->json(
-            'POST',
+        $response = $this->post(
             '/api/energy-budget',
             [
                 "amount"=>"2000",
                 "enforcement"=> 'W',
             ]
         );
-
-        \Log::info($response->json());
         $response
             ->assertStatus(200)
             ->assertJsonFragment([
-                'MN' => '01223567AB'
+                'success' => true
             ]);
     }
 
-    // public function testToggleOn()
-    // {
-    // }
 
-    // public function testRechargeMeter()
-    // {
-    // }
+     public function testRechargeMeter()
+     {
+         Passport::actingAs(
+             User::find(1)
+         );
+
+         $response = $this->post(
+             '/api/energy-budget',
+             [
+                 "amount"=>"2000",
+                 "enforcement"=> 'W',
+             ]
+         );
+         $response
+             ->assertStatus(200)
+             ->assertJsonFragment([
+                 'success' => true
+             ]);
+     }
 
     // public function testIOTdata()
     // {
@@ -82,29 +117,15 @@ class ServerTest extends TestCase
     // {
     // }
 
-    // public function testSmartConnect()
-    // {
-    //     $params = [
-    //         "MN"=>"01223567AB", // This is the meter number
-    //         "Msg"=> 1, // The message type of for regular meter reading
-    //         "S"=>"2243575687", // POSIX Timestamp in seconds of the request message
-    //         "DT"=>"2243575687", // POSIX Timestamp in seconds of the capture time request message
-    //         "CD"=> 0 , // For smart disconnect
-    //     ];
-    //     $params = json_encode($params);
-    //     $response = $this->withHeaders([
-    //         'X-Header' => 'Value',
-    //     ])->json(
-    //         'POST',
-    //         '/api/collector',
-    //     ['Password'=> $params]
-    //     );
+     public function testSmartConnect()
+     {
+         Passport::actingAs(
+             User::find(1)
+         );
 
-    //     \Log::info($response->json());
-    //     $response
-    //         ->assertStatus(200)
-    //         ->assertJsonFragment([
-    //             'MN' => '01223567AB'
-    //         ]);
-    // }
+         $response = $this->post('/api/toggle-on');
+
+         $response->assertStatus(200);
+
+     }
 }

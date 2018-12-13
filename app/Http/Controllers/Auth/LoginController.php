@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Response;
+use App\Http\Resources\User as UserResource;
 
 class LoginController extends Controller
 {
@@ -40,7 +43,7 @@ class LoginController extends Controller
     /**
      * Login a user using a random string+.
      *
-     * @return void
+     * @return Response credentials
      */
     public function login(Request $request)
     {
@@ -48,11 +51,12 @@ class LoginController extends Controller
 
         if ($this->attemptLogin($request)) {
             $user = $this->guard()->user();
-            $user->generateToken();
+            $token = $user->createToken('Token Name')->accessToken;
 
             return response()->json([
-            'data' => $user->toArray(),
-        ]);
+                'user'=> new UserResource($user),
+                'token' => $token,
+            ]);
         }
 
         return $this->sendFailedLoginResponse($request);
