@@ -16,7 +16,7 @@ trait SyncsWithFirestore
      */
     public static function bootSyncsWithFirestore()
     {
-        error_log('startec boot of sync with firestore');
+        error_log('started boot of sync with firestore');
         static::created(function ($model) {
             $model->saveToFirestore('set');
         });
@@ -35,13 +35,19 @@ trait SyncsWithFirestore
     function initialize()
     {
     // Create the Cloud Firestore client
-        $this->firestoreClient = new FirestoreClient();
+        $string = file_get_contents("iMeter-8bd8ce541587.json");
+        $keyFile= \json_decode($str*ing,true);
+        $config = [
+            'keyFile'=>$keyFile,
+            'projectId'=>$keyFile['project_id']
+        ];
+        $this->firestoreClient = new FirestoreClient($config);
         error_log('Created Cloud Firestore client with default project ID.' . PHP_EOL);
     }
 
     function getFirestoreCollection()
     {
-        return $this->firestoreClient->collection($this->getTable);
+        return $this->firestoreClient->collection($this->getTable());
     }
 
     /**
@@ -49,19 +55,19 @@ trait SyncsWithFirestore
      */
     protected function saveToFirestore($mode)
     {
-//        if (is_null($this->firestoreClient)) {
-//            $this->initialize();
-//        }
-//
-//        switch ($mode) {
-//            case 'set':
-//                $this->getFirestoreCollection()->document($this->getKey())->set($this->fresh()->toArray());
-//                break;
-//            case 'update':
-//                $this->getFirestoreCollection()->document($this->getKey())->update($this->fresh()->toArray());
-//                break;
-//            case 'delete':
-//                $this->getFirestoreCollection()->document($this->getKey())->delete();
-//        }
+        if (is_null($this->firestoreClient)) {
+            $this->initialize();
+        }
+
+        switch ($mode) {
+            case 'set':
+                $this->getFirestoreCollection()->document($this->getKey())->set($this->fresh()->toArray());
+                break;
+            case 'update':
+                $this->getFirestoreCollection()->document($this->getKey())->update($this->fresh()->toArray());
+                break;
+            case 'delete':
+                $this->getFirestoreCollection()->document($this->getKey())->delete();
+        }
     }
 }

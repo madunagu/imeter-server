@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "imeter-223223",
+  "private_key_id": "8bd8ce5415871411092a04a437eb503c457c9276",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCXpqPVvoHY0pT/\nJf+JJwHoCNUPN4XlMjH7WNtTSM5H/NdDoOwEQBjeO/9pyoOKHds7NBznazXAz/zp\nlOP50ORBt5PoHfsFEeagZKmVuqR0VpqY1XWwNQVg4R3sRZkzUDFC/+EAdyothzOv\nSykSGays31Aooyc+Ky5y6xUjzEH8/DrvzTxAqkThYZPEF6B5vxotIytdt6GAkOZb\n24iR9c3DyRnXh0m2/kwFTrAB0R/umww2YM+LX3z3ytqBDd0nzG68sP7M4+6gosXS\n48x3gUhpMt0p3m8jqViS2JXgJ+ovuP7sWBoLWGy9Rzt2J7j1F+BT6NgHEW3UpwkS\nc4zE/d4jAgMBAAECggEAGe4ueW/XuAFZ5L7UkNkQpGJOPAncZTJOBZJN/lGmo/yB\nulibwqZLGkTcCXTNRSKRx+/DOXbFfDCUKESDLsYfIXWIXtoxf85txuMvdCCz2gis\n6pElTHnkb4pOmYXVCkceBTzHdlLp7Vr+5WxOm3+0XOLaS/iJz0GG8bNsq/BTIDSl\nY1PaNMd9XxY2JgAbmML+K1glrvEKRQGDDVwKLQPV/JWPjMQJavdli+8j2TospTZ7\niaU5UNvLMm85FQpdlOKAPyAeK+mvOyKEe1SZ1EowXEN2bROa/jYOOLrKDTBLCLz1\ndw9QfY7cSD8pUfFR1pNab5QpEt1ehIZ0rgEIfKFSEQKBgQDIJsLIX5kAFQAYpsHA\naoLUFcALO2FMS7OLoe41uUXM6qM5K74dBQ78GCyCARsMMtw4Npoep3Rzz3XQNIa+\nyDVmylrupz0O3NwRP2Ncllk/AtW1YByJJ9GyQo6Bqc37ypcuocT4Tp5LVV44U4/3\n3lPNm4FPkEXvEeyXekmu46TdJQKBgQDB92M9FSkpO/b+1V4+5EYHt5GF3Ec6P5tU\nz/hkI4bzc5cApX12XqtcGFcjn2/mg7Q2ADcz+PSs0C/cGbu9NVMzlsP2j2GgvWKn\nSK7JIxYciJbv8V6olLJPqvXmheOuUHr+2Uq5RTek4Dlj+Oi4uub1ACtj7zkefqDU\ndOXHFre/pwKBgCeyOFORUkEH6Tr6Z9cHyObTYYFYx5VgNj3tYddZ5ZQcvT6rhEsx\nI6WwDbPDEGA8/hxQCAUoZRpK/SzMHiVcg+rdG2fV13BJMYRiNAy67PxoTYZph39U\nXGykcqsYyHe12IIxJ2WwAgki50r4l8crWyeePelPze76eRgZ8t8y2xHZAoGAbHTM\nu6nqYxERkfpygU4YzlXZe/ToquxICYtkQ3IOEnCunYDrf1V+EbfWeae75TP9fzht\npZTuEvcx26tT6382r6D8oBAaMcvTruAYQ4Vn5rqFU1Mub6r9bUiVyLlSzvRXYcrU\nWnYWoA10aa8TSb/QRmw61t07ng6GFWXr2X+dbP8CgYBFrl3ed6gQbcrofCDQEZQe\nCcn5SVor0h3FNLKWqAmPfqLL54p84GBRH+9qT8k66zbIyQgPEsSpjVQr3eE/hOWF\nG8bwu/7RVUZhEJYe0cj+t3G5nBSu0kVpSqvju5GRZwd/7xaOknQyh0lU70fsV3zi\nFQzSoGT5leGL2eweVHWs0g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "imeter-firestore@imeter-223223.iam.gserviceaccount.com",
+  "client_id": "104584903278856190339",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/imeter-firestore%40imeter-223223.iam.gserviceaccount.com"
+}
